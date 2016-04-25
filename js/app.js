@@ -24,7 +24,7 @@ Enemy.prototype.update = function(dt) {
 
 Enemy.prototype.reset = function(speed){
     this.x = -100;
-    speed = Math.floor(Math.random() * 120 + 20);
+    speed = Math.floor(Math.random() * 140 + 40);
     //console.log("Bug reset, new speed is " + speed + "!");
     return speed;
 };
@@ -39,35 +39,34 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 // Now write your own player class
 var Player = function() {
-    this.x = 0;
-    this.y = 0;
+    this.x = 200;
+    this.y = 380;
     this.sprite = 'images/char-pink-girl.png';
 };
 
 Player.prototype.update = function() {
-    if (this.ctlKey === 'left' && this.x > 0) {
-    console.log(player);
-        this.x = this.x - 40;
-        console.log("pressed Left!, this.x = " + player.x);
-    } else if (this.ctlKey === 'right' && this.x != 400) {
-        this.x = this.x + 40;
-    } else if (this.ctlKey === 'up') {
-        this.y = this.y - 40;
-    } else if (this.ctlKey === 'down' && this.y != 400) {
-        this.y = this.y + 40;
-    }
+
 };
 
 Player.prototype.render = function() {
-    this.x = 200;
-    this.y = 380;
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+    var player_base_move = 30;
 Player.prototype.handleInput = function(event) {
     this.ctlKey = event;
     console.log(this.ctlKey);
 
+    if (this.ctlKey === 'left' && this.x > 0) {
+        this.x -= player_base_move;
+    } else if (this.ctlKey === 'right' && this.x < 410) {
+        this.x = this.x + player_base_move;
+    } else if (this.ctlKey === 'up' && this.y > 18 ) {
+        this.y = this.y - player_base_move;
+    } else if (this.ctlKey === 'down' && this.y < 410) {
+        this.y = this.y + player_base_move;
+    }
+    console.log("I am at x" + this.x + ", y" + this.y);
 };
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies

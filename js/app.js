@@ -20,6 +20,7 @@ Enemy.prototype.update = function(dt) {
     if (this.x > 505) {
         this.speed = this.reset();
     }
+    this.findCollision();
 };
 
 Enemy.prototype.reset = function(speed){
@@ -32,6 +33,21 @@ Enemy.prototype.reset = function(speed){
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+Enemy.prototype.findCollision = function(){
+
+    var pngWidth = 101;
+    var pngHeight = 171;
+
+    if (player.x < this.x + pngWidth &&
+        player.x + pngWidth > this.x &&
+        player.y < this.y + pngHeight &&
+        player.y + pngHeight > this.y) {
+        //collision?
+        console.log("Enemy Collision!!!1!");
+    }
+
 };
 
 // Now write your own player class
@@ -93,18 +109,5 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 
-// first try at collision detection?
-    var pngWidth = 101;
-    var pngHeight = 171;
-
-    for(var enemy = 0; enemy < allEnemies.length; enemy++) {
-        if (player.x < allEnemies[enemy].x + pngWidth &&
-            player.x + pngWidth > allEnemies[enemy].x &&
-            player.y < allEnemies[enemy].y + pngHeight &&
-            player.y + pngHeight > allEnemies[enemy].y) {
-            //collision?
-            console.log("Collision!!!1!");
-        }
-    }
 
 });

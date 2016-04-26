@@ -90,12 +90,21 @@ Player.prototype.handleInput = function(event) {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-var Vader = new Enemy(-75, 226, 80);
+/*var Vader = new Enemy(-75, 226, 80);
 var Voldermort = new Enemy(-145, 145, 100);
 var Darkseid = new Enemy(-215, 65, 120);
 
-var allEnemies = [Vader, Voldermort, Darkseid];
-//console.log(allEnemies);
+var allEnemies = [Vader, Voldermort, Darkseid];*/
+
+var paths = [65, 145, 226];
+var allEnemies = [];
+
+for (var path = 0; path < paths.length; path++ ) {
+    var newEnemy = new Enemy(-100, paths[path], 80);
+    console.log(newEnemy);
+    allEnemies.push(newEnemy);
+}
+console.log(allEnemies);
 
 var player = new Player();
 

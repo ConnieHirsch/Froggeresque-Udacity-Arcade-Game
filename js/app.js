@@ -55,7 +55,7 @@ Player.prototype.render = function() {
     var player_base_move = 30;
 Player.prototype.handleInput = function(event) {
     this.ctlKey = event;
-    console.log(this.ctlKey);
+    //console.log(this.ctlKey);
 
     if (this.ctlKey === 'left' && this.x > 0) {
         this.x -= player_base_move;
@@ -66,7 +66,7 @@ Player.prototype.handleInput = function(event) {
     } else if (this.ctlKey === 'down' && this.y < 410) {
         this.y = this.y + player_base_move;
     }
-    console.log("I am at x" + this.x + ", y" + this.y);
+    console.log(this.ctlKey + ": I am at x" + this.x + ", y" + this.y);
 };
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -77,7 +77,7 @@ var Voldermort = new Enemy(-145, 145);
 var Darkseid = new Enemy(-215, 65);
 
 var allEnemies = [Vader, Voldermort, Darkseid];
-console.log(allEnemies);
+//console.log(allEnemies);
 
 var player = new Player();
 
@@ -92,4 +92,19 @@ document.addEventListener('keyup', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
+
+// first try at collision detection?
+    var pngWidth = 101;
+    var pngHeight = 171;
+
+    for(var enemy = 0; enemy < allEnemies.length; enemy++) {
+        if (player.x < allEnemies[enemy].x + pngWidth &&
+            player.x + pngWidth > allEnemies[enemy].x &&
+            player.y < allEnemies[enemy].y + pngHeight &&
+            player.y + pngHeight > allEnemies[enemy].y) {
+            //collision?
+            console.log("Collision!!!1!");
+        }
+    }
+
 });

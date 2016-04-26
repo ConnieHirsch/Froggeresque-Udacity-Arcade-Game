@@ -1,10 +1,10 @@
 // Enemies our player must avoid
-var Enemy = function(enemy_x, enemy_y) {
+var Enemy = function(enemy_x, enemy_y, startSpeed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
     this.x = enemy_x;
     this.y = enemy_y;
-    this.speed = 80;
+    this.speed = startSpeed;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -90,9 +90,9 @@ Player.prototype.handleInput = function(event) {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-var Vader = new Enemy(-75, 226);
-var Voldermort = new Enemy(-145, 145);
-var Darkseid = new Enemy(-215, 65);
+var Vader = new Enemy(-75, 226, 80);
+var Voldermort = new Enemy(-145, 145, 100);
+var Darkseid = new Enemy(-215, 65, 120);
 
 var allEnemies = [Vader, Voldermort, Darkseid];
 //console.log(allEnemies);

@@ -20,6 +20,7 @@ Enemy.prototype.update = function(dt) {
     if (this.x > 505) {
         this.speed = this.reset();
     }
+    // invoke collision detection
     this.findCollision();
 };
 
@@ -35,10 +36,11 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// method to handle
 Enemy.prototype.findCollision = function(){
 
-    var pngWidth = 101;
-    var pngHeight = 171;
+    var pngWidth = 56; //total width of png: 101
+    var pngHeight = 85; // total height of png : 171
 
     if (player.x < this.x + pngWidth &&
         player.x + pngWidth > this.x &&
@@ -56,7 +58,7 @@ Enemy.prototype.findCollision = function(){
 // Now write your own player class
 var Player = function() {
     this.x = 200;
-    this.y = 380;
+    this.y = 410;
     this.sprite = 'images/char-pink-girl.png';
 };
 

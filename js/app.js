@@ -26,7 +26,7 @@ Enemy.prototype.update = function(dt) {
 
 Enemy.prototype.reset = function(speed){
     this.x = -100;
-    speed = Math.floor(Math.random() * 140 + 40);
+    var speed = Math.floor(Math.random() * 140 + 40);
     //console.log("Bug reset, new speed is " + speed + "!");
     return speed;
 };
@@ -90,17 +90,13 @@ Player.prototype.handleInput = function(event) {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-/*var Vader = new Enemy(-75, 226, 80);
-var Voldermort = new Enemy(-145, 145, 100);
-var Darkseid = new Enemy(-215, 65, 120);
-
-var allEnemies = [Vader, Voldermort, Darkseid];*/
-
 var paths = [65, 145, 226];
 var allEnemies = [];
 
 for (var path = 0; path < paths.length; path++ ) {
-    var newEnemy = new Enemy(-100, paths[path], 80);
+    var speed = Math.floor(Math.random() * 140 + 40);
+    var startingLine = Math.floor(Math.random() * 300 + 100);
+    var newEnemy = new Enemy(-startingLine, paths[path], speed);
     console.log(newEnemy);
     allEnemies.push(newEnemy);
 }

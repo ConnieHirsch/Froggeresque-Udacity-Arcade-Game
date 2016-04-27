@@ -40,7 +40,7 @@ Enemy.prototype.render = function() {
 Enemy.prototype.findCollision = function(){
 
     var pngWidth = 56; //total width of png: 101
-    var pngHeight = 85; // total height of png : 171
+    var pngHeight = 56; // total height of png : 171
 
     if (player.x < this.x + pngWidth &&
         player.x + pngWidth > this.x &&
@@ -48,6 +48,7 @@ Enemy.prototype.findCollision = function(){
         player.y + pngHeight > this.y) {
         //collision?
         console.log("Enemy Collision!!!1!");
+        player.reset("You lost, please start over!");
     }
 
 };
@@ -65,6 +66,14 @@ var Player = function() {
 Player.prototype.update = function() {
 
 };
+// if we have a collision, restart the player back to start square
+Player.prototype.reset = function(msg) {
+    this.x = 200;
+    this.y = 410;
+    console.log("Player starts over!");
+    gameMessage(msg);
+
+}
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -83,6 +92,10 @@ Player.prototype.handleInput = function(event) {
         this.y = this.y - player_base_move;
     } else if (this.ctlKey === 'down' && this.y < 410) {
         this.y = this.y + player_base_move;
+    }
+
+    if (player.y === -10) {
+        player.reset("You WON!");
     }
     console.log(this.ctlKey + ": I am at x" + this.x + ", y" + this.y);
 };
@@ -118,3 +131,24 @@ document.addEventListener('keyup', function(e) {
 
 
 });
+
+
+function gameMessage(msg){
+    var c = document.querySelector("#won");
+
+    ctx.strokeStyle = "#33cc33";
+    ctx.strokeRect(50, 200, 400, 400);
+
+    ctx.beginPath();
+    ctx.moveTo(75, 75);
+    ctx.lineTo(125, 125);
+    ctx.lineTo(125, 75);
+    ctx.fillStyle = "cadetblue";
+    ctx.fill();
+
+    ctx.strokeStyle = "black";
+    ctx.font = "64px Impact";
+    ctx.textBaseline = "bottom";
+    ctx.lineWidth = 3;
+    ctx.strokeText(msg, 50, 200);
+}

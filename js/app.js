@@ -134,21 +134,13 @@ document.addEventListener('keyup', function(e) {
 
 
 function gameMessage(msg){
-    var c = document.querySelector("#won");
+    var c = document.querySelector("#canvasTop");
+    var ctxTop = c.getContext("2d");
 
-    ctx.strokeStyle = "#33cc33";
-    ctx.strokeRect(50, 200, 400, 400);
 
-    ctx.beginPath();
-    ctx.moveTo(75, 75);
-    ctx.lineTo(125, 125);
-    ctx.lineTo(125, 75);
-    ctx.fillStyle = "cadetblue";
-    ctx.fill();
-
-    ctx.strokeStyle = "black";
-    ctx.font = "64px Impact";
-    ctx.textBaseline = "bottom";
-    ctx.lineWidth = 3;
-    ctx.strokeText(msg, 50, 200);
+    ctxTop.strokeStyle = "black";
+    ctxTop.font = "64px Impact";
+    ctxTop.textBaseline = "top";
+    ctxTop.lineWidth = 2;
+    ctxTop.strokeText(msg, 50, 20);
 }

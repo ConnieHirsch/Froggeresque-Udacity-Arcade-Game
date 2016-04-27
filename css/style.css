@@ -1,3 +1,8 @@
 body {
     text-align: center;
 }
+#canvasTop {
+  position: absolute;
+  width: 505px;
+  height: 600px;
+}

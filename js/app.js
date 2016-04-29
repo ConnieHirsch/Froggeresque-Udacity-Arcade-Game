@@ -48,7 +48,7 @@ Enemy.prototype.findCollision = function(){
         player.y + pngHeight > this.y) {
         //collision?
         console.log("Enemy Collision!!!1!");
-        player.reset("You lost, please start over!");
+        player.reset("You lost, please Restart!");
     }
 
 };
@@ -137,10 +137,14 @@ function gameMessage(msg){
     var c = document.querySelector("#canvasTop");
     var ctxTop = c.getContext("2d");
 
-
     ctxTop.strokeStyle = "black";
-    ctxTop.font = "64px Impact";
+    ctxTop.font = "24px Impact";
     ctxTop.textBaseline = "top";
     ctxTop.lineWidth = 2;
     ctxTop.strokeText(msg, 50, 20);
 }
+
+document.getElementById("start").addEventListener("click", function(){
+    document.getElementById("startscreen").style.display = "none";
+    alert("This would start game!");
+});

@@ -1,8 +1,17 @@
 body {
     text-align: center;
+    background-color: palegreen;
 }
 #canvasTop {
   position: absolute;
   width: 505px;
   height: 600px;
+}
+button {
+  font-family: Impact, sans-serif;
+  font-size: 20px;
+  background-color: palegreen;
+}
+#startScreen {
+  display: block;
 }

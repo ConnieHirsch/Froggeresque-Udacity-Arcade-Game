@@ -17,3 +17,8 @@ button {
 #startScreen {
   display: block;
 }
+#headline {
+  display: none;
+  font-family: Impact, sans-serif;
+  font-size: 40px;
+}

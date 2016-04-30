@@ -47,7 +47,6 @@ Enemy.prototype.findCollision = function(){
         player.y < this.y + pngHeight &&
         player.y + pngHeight > this.y) {
         //collision?
-        //document.getElementById("canvasTop").style.display = "block";
         console.log("Enemy Collision!!!1!");
 
         player.reset("You lost, please Restart!");
@@ -73,7 +72,6 @@ Player.prototype.reset = function(msg) {
     this.x = 200;
     this.y = 410;
     console.log("Player starts over!");
-            //document.getElementById("canvasTop").style.display = "block";
     gameMessage(msg);
     restartEnemies();
 
@@ -103,10 +101,9 @@ Player.prototype.handleInput = function(event) {
     }
     //console.log(this.ctlKey + ": I am at x" + this.x + ", y" + this.y);
 };
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
 
+
+// decided I wanted predictable paths for bugs, hence the array.
 var paths = [65, 145, 226];
 var allEnemies = [];
 
@@ -121,6 +118,7 @@ for (var path = 0; path < paths.length; path++ ) {
 }
 console.log(allEnemies);
 
+// all bugs start off at 0 speed offscreen, only get moving when we tell them to
 function restartEnemies () {
     // add activity to offscreen enemies
     for (var enemy = 0; enemy < allEnemies.length; enemy++){
@@ -133,6 +131,7 @@ function restartEnemies () {
     console.log(allEnemies);
 }
 
+//this is all it takes to start the player object.
 var player = new Player();
 
 // This listens for key presses and sends the keys to your
@@ -147,46 +146,23 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 
-
 });
 
 
-// create a canvas screen to show won, lost message
-function createCanvasTop(){
-    var canvasTop = document.createElement('canvas'),
-    ctx = canvasTop.getContext('2d');
-    canvasTop.id = "canvasTop";
-    canvasTop.width = 505;
-    canvasTop.height = 606;
-    document.body.appendChild(canvasTop);
-
-}
-
+// take the success/failure/whatever message and send it on to the headline div
 function gameMessage(msg){
-    createCanvasTop();
-    var c = document.querySelector("#canvasTop");
-    var ctxTop = c.getContext("2d");
-
-    ctxTop.strokeStyle = "black";
-    ctxTop.font = "36px Impact";
-    ctxTop.textBaseline = "top";
-    ctxTop.lineWidth = 2;
-    ctxTop.strokeText(msg, 50, 20);
-
-    document.getElementById("game").style.display = "none";
-    document.getElementById("canvasTop").style.display = "block";
-
+    document.getElementById("headline").style.display = "block";
+    document.getElementById("headline").innerHTML = msg;
 }
+
 
 document.getElementById("start").addEventListener("click", function(){
-    document.getElementById("start").style.display = "none";
+    document.getElementById("headline").style.display = "none";
     restartEnemies();
 });
+
 document.getElementById("restart").addEventListener("click", function(){
     document.getElementById("game").style.display = "block";
-    // remove won, lost msg
-    var oldTop = document.getElementById("canvasTop");
-    document.body.removeChild(oldTop);
-
+    document.getElementById("headline").style.display = "none";
     restartEnemies();
 });

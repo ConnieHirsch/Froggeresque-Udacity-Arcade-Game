@@ -159,7 +159,9 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        alert("This pauses the start?");
+        //alert("This pauses the start?");
+        //main();
+        //document.getElementById("start").style.display = "inline";
         // noop
     }
 

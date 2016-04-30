@@ -3,7 +3,9 @@ body {
     background-color: palegreen;
 }
 #canvasTop {
-  position: absolute;
+  background-color: green;
+  display: none;
+  /*position: absolute;*/
   width: 505px;
   height: 600px;
 }

@@ -47,7 +47,9 @@ Enemy.prototype.findCollision = function(){
         player.y < this.y + pngHeight &&
         player.y + pngHeight > this.y) {
         //collision?
+        document.getElementById("canvasTop").style.display = "block";
         console.log("Enemy Collision!!!1!");
+
         player.reset("You lost, please Restart!");
     }
 
@@ -72,6 +74,7 @@ Player.prototype.reset = function(msg) {
     this.y = 410;
     console.log("Player starts over!");
     gameMessage(msg);
+    restartEnemies();
 
 }
 
@@ -97,7 +100,7 @@ Player.prototype.handleInput = function(event) {
     if (player.y === -10) {
         player.reset("You WON!");
     }
-    console.log(this.ctlKey + ": I am at x" + this.x + ", y" + this.y);
+    //console.log(this.ctlKey + ": I am at x" + this.x + ", y" + this.y);
 };
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -114,6 +117,17 @@ for (var path = 0; path < paths.length; path++ ) {
     allEnemies.push(newEnemy);
 }
 console.log(allEnemies);
+
+function restartEnemies () {
+    for (var enemy = 0; enemy < allEnemies.length; enemy++){
+    var speed = Math.floor(Math.random() * 140 + 40);
+    var startingLine = Math.floor(Math.random() * 300 + 100);
+    allEnemies[enemy].x = -startingLine;
+    allEnemies[enemy].speed = speed;
+    };
+    console.log("Restarted enemies!");
+    console.log(allEnemies);
+}
 
 var player = new Player();
 
@@ -145,6 +159,9 @@ function gameMessage(msg){
 }
 
 document.getElementById("start").addEventListener("click", function(){
-    document.getElementById("startscreen").style.display = "none";
     alert("This would start game!");
+    document.getElementById("start").style.display = "none";
+});
+document.getElementById("restart").addEventListener("click", function(){
+    alert("This would restart game!");
 });

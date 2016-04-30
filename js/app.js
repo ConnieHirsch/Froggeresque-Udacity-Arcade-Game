@@ -47,7 +47,7 @@ Enemy.prototype.findCollision = function(){
         player.y < this.y + pngHeight &&
         player.y + pngHeight > this.y) {
         //collision?
-        document.getElementById("canvasTop").style.display = "block";
+        //document.getElementById("canvasTop").style.display = "block";
         console.log("Enemy Collision!!!1!");
 
         player.reset("You lost, please Restart!");
@@ -73,6 +73,7 @@ Player.prototype.reset = function(msg) {
     this.x = 200;
     this.y = 410;
     console.log("Player starts over!");
+            //document.getElementById("canvasTop").style.display = "block";
     gameMessage(msg);
     restartEnemies();
 
@@ -110,20 +111,23 @@ var paths = [65, 145, 226];
 var allEnemies = [];
 
 for (var path = 0; path < paths.length; path++ ) {
-    var speed = Math.floor(Math.random() * 140 + 40);
-    var startingLine = Math.floor(Math.random() * 300 + 100);
-    var newEnemy = new Enemy(-startingLine, paths[path], speed);
-    console.log(newEnemy);
+        //var speed = Math.floor(Math.random() * 140 + 40);
+        //var startingLine = Math.floor(Math.random() * 300 + 100);
+    // now we START all enemies offscreen, and let the player 'restart' them
+    // when they are ready to actually START
+    var newEnemy = new Enemy(-200, paths[path], 0);
+    //console.log(newEnemy);
     allEnemies.push(newEnemy);
 }
 console.log(allEnemies);
 
 function restartEnemies () {
+    // add activity to offscreen enemies
     for (var enemy = 0; enemy < allEnemies.length; enemy++){
-    var speed = Math.floor(Math.random() * 140 + 40);
-    var startingLine = Math.floor(Math.random() * 300 + 100);
-    allEnemies[enemy].x = -startingLine;
-    allEnemies[enemy].speed = speed;
+        var speed = Math.floor(Math.random() * 140 + 40);
+        var startingLine = Math.floor(Math.random() * 300 + 100);
+        allEnemies[enemy].x = -startingLine;
+        allEnemies[enemy].speed = speed;
     };
     console.log("Restarted enemies!");
     console.log(allEnemies);
@@ -147,21 +151,42 @@ document.addEventListener('keyup', function(e) {
 });
 
 
+// create a canvas screen to show won, lost message
+function createCanvasTop(){
+    var canvasTop = document.createElement('canvas'),
+    ctx = canvasTop.getContext('2d');
+    canvasTop.id = "canvasTop";
+    canvasTop.width = 505;
+    canvasTop.height = 606;
+    document.body.appendChild(canvasTop);
+
+}
+
 function gameMessage(msg){
+    createCanvasTop();
     var c = document.querySelector("#canvasTop");
     var ctxTop = c.getContext("2d");
 
     ctxTop.strokeStyle = "black";
-    ctxTop.font = "24px Impact";
+    ctxTop.font = "36px Impact";
     ctxTop.textBaseline = "top";
     ctxTop.lineWidth = 2;
     ctxTop.strokeText(msg, 50, 20);
+
+    document.getElementById("game").style.display = "none";
+    document.getElementById("canvasTop").style.display = "block";
+
 }
 
 document.getElementById("start").addEventListener("click", function(){
-    alert("This would start game!");
     document.getElementById("start").style.display = "none";
+    restartEnemies();
 });
 document.getElementById("restart").addEventListener("click", function(){
-    alert("This would restart game!");
+    document.getElementById("game").style.display = "block";
+    // remove won, lost msg
+    var oldTop = document.getElementById("canvasTop");
+    document.body.removeChild(oldTop);
+
+    restartEnemies();
 });

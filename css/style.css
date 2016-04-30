@@ -3,9 +3,9 @@ body {
     background-color: palegreen;
 }
 #canvasTop {
-  background-color: green;
+  background-color: palegreen;
   display: none;
-  /*position: absolute;*/
+  text-align: center;
   width: 505px;
   height: 600px;
 }

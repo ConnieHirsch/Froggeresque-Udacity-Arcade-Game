@@ -2,6 +2,7 @@
     var player_base_move = 30;
     var allEnemies = [];
     var score = 0;
+    var lives = 3;
 
 
 // Enemies our player must avoid
@@ -51,8 +52,13 @@ Enemy.prototype.findCollision = function(){
         player.y + pngHeight > this.y) {
         //collision?
         console.log("Enemy Collision!!!1!");
-
+        lives--;
+        document.getElementById("lives").value = lives;
+        if (lives < 1) {
+            gameMessage("I'm sorry, you're out of lives!");
+        } else {
         player.reset("You lost, please Restart!");
+        }
     }
 
 };
@@ -165,11 +171,13 @@ document.addEventListener('keyup', function(e) {
 function gameMessage(msg){
     document.getElementById("headline").style.display = "block";
     document.getElementById("headline").innerHTML = msg;
+        document.getElementById("game").style.display = "none";
 }
 
 
 document.getElementById("start").addEventListener("click", function(){
     document.getElementById("start").style.display = "none";
+    document.getElementById("restart").style.display = "inline";
     document.getElementById("headline").style.display = "none";
     restartEnemies();
 });

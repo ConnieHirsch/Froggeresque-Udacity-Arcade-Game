@@ -26,6 +26,9 @@ button,
 #startScreen {
   display: block;
 }
+#restart {
+  display: none;
+}
 #headline {
   display: none;
   font-family: Impact, sans-serif;

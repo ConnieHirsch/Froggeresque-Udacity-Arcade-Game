@@ -13,10 +13,17 @@ var Gem = function(gem_x, gem_y) {
     this.sprite = 'images/Gem Blue.png';
 };
 
-Gem.prototype.update = function() {
-
+Gem.prototype.update = function(gem_x, gem_y) {
+    this.x = gem_x;
+    this.y = gem_y;
 };
 
+Gem.prototype.reset = function(){
+    var place_x = Math.floor(Math.random() * 450 + 30);
+    var place_y = Math.floor(Math.random() * 250 + 30);
+    console.log("Gem reset, now x:" + place_x + " y:" + place_y + "!");
+    this.update(place_x, place_y);
+};
 // Draw the enemy on the screen, required method for game
 Gem.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -55,6 +62,7 @@ Enemy.prototype.update = function(dt) {
     }
     // invoke collision detection
     this.findCollision();
+    this.gemCollision();
 };
 
 Enemy.prototype.reset = function(speed){
@@ -97,7 +105,26 @@ Enemy.prototype.findCollision = function(){
 
 };
 
+// method to handle collisions!
+Enemy.prototype.gemCollision = function(){
 
+    var pngWidth = 56; //total width of png: 101
+    var pngHeight = 56; // total height of png : 171
+
+// there are multiple gems
+    for (var gem = 0; gem < allGems.length; gem++){
+    if (allGems[gem].x < this.x + pngWidth &&
+        allGems[gem].x + pngWidth > this.x &&
+        allGems[gem].y < this.y + pngHeight &&
+        allGems[gem].y + pngHeight > this.y) {
+        //collision?
+        console.log("Gem Collision!!!1!");
+        allGems[gem].reset();
+    }
+
+    }
+
+};
 
 // Now write your own player class ////////////////////////////////////////////
 // This class requires an update(), render() and

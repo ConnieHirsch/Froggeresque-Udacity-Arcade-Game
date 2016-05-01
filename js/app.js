@@ -22,15 +22,18 @@ Gem.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// place the gems
 for (var gem = 0; gem < 3; gem++ ) {
     var place_x = Math.floor(Math.random() * 300 + 30);
     var place_y = Math.floor(Math.random() * 300 + 30);
     var newGem = new Gem(place_x, place_y);
-    console.log(newGem);
+    //console.log(newGem);
     allGems.push(newGem);
 }
 console.log(allGems);
 
+
+/////////////////////////////////////////////////////////////////
 // Enemies our player must avoid
 var Enemy = function(enemy_x, enemy_y, startSpeed) {
     // Variables applied to each of our instances go here,
@@ -94,7 +97,9 @@ Enemy.prototype.findCollision = function(){
 
 };
 
-// Now write your own player class
+
+
+// Now write your own player class ////////////////////////////////////////////
 // This class requires an update(), render() and
 // a handleInput() method.
 // Now write your own player class
@@ -145,6 +150,10 @@ Player.prototype.handleInput = function(event) {
 };
 
 
+////////////////////////////////////////////////////////////////////////////
+// Game functions
+////////////////////////////////////////////////////////////////////////////
+
 // decided I wanted predictable paths for bugs, hence the array.
 var paths = [65, 145, 226];
 
@@ -192,9 +201,7 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
-
     player.handleInput(allowedKeys[e.keyCode]);
-
 });
 
 
@@ -206,6 +213,7 @@ function gameMessage(msg){
 }
 
 
+// Start button to begin game binding
 document.getElementById("start").addEventListener("click", function(){
     document.getElementById("start").style.display = "none";
     document.getElementById("restart").style.display = "inline";
@@ -213,12 +221,14 @@ document.getElementById("start").addEventListener("click", function(){
     restartEnemies();
 });
 
+// Next turn button binding
 document.getElementById("restart").addEventListener("click", function(){
     document.getElementById("game").style.display = "inline";
     document.getElementById("headline").style.display = "none";
     restartEnemies();
 });
 
+// Start over button binding
 document.getElementById("replay").addEventListener("click", function() {
     hideReplay();
     hideRestart();

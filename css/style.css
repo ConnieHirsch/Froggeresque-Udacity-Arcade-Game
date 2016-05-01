@@ -9,10 +9,19 @@ body {
   width: 505px;
   height: 600px;
 }
-button {
+button,
+#scorespan,
+#score,
+#livesspan,
+#lives {
   font-family: Impact, sans-serif;
   font-size: 20px;
   background-color: palegreen;
+  text-align: right;
+}
+#score,
+#lives {
+  width: 20px;
 }
 #startScreen {
   display: block;

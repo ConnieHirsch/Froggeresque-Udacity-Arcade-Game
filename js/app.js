@@ -1,3 +1,9 @@
+// variables to hold values...
+    var player_base_move = 30;
+    var allEnemies = [];
+    var score = 0;
+
+
 // Enemies our player must avoid
 var Enemy = function(enemy_x, enemy_y, startSpeed) {
     // Variables applied to each of our instances go here,
@@ -13,9 +19,6 @@ var Enemy = function(enemy_x, enemy_y, startSpeed) {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
     this.x = this.x + this.speed * dt;
     if (this.x > 505) {
         this.speed = this.reset();
@@ -36,7 +39,7 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// method to handle
+// method to handle collisions!
 Enemy.prototype.findCollision = function(){
 
     var pngWidth = 56; //total width of png: 101
@@ -67,21 +70,20 @@ var Player = function() {
 Player.prototype.update = function() {
 
 };
-// if we have a collision, restart the player back to start square
+// event is win or lose, restart the player back to start square
+//  and, send on the game message.
 Player.prototype.reset = function(msg) {
     this.x = 200;
     this.y = 410;
     console.log("Player starts over!");
     gameMessage(msg);
-    restartEnemies();
-
+    parkEnemies();
 }
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-    var player_base_move = 30;
 Player.prototype.handleInput = function(event) {
     this.ctlKey = event;
     //console.log(this.ctlKey);
@@ -97,6 +99,9 @@ Player.prototype.handleInput = function(event) {
     }
 
     if (player.y === -10) {
+        score++;
+        document.getElementById("score").value = score;
+        console.log(score);
         player.reset("You WON!");
     }
     //console.log(this.ctlKey + ": I am at x" + this.x + ", y" + this.y);
@@ -105,7 +110,6 @@ Player.prototype.handleInput = function(event) {
 
 // decided I wanted predictable paths for bugs, hence the array.
 var paths = [65, 145, 226];
-var allEnemies = [];
 
 for (var path = 0; path < paths.length; path++ ) {
         //var speed = Math.floor(Math.random() * 140 + 40);
@@ -129,6 +133,14 @@ function restartEnemies () {
     };
     console.log("Restarted enemies!");
     console.log(allEnemies);
+}
+
+function parkEnemies() {
+    // hide them offscreen until player is ready to restart
+    for (var enemy = 0; enemy < allEnemies.length; enemy++){
+        allEnemies[enemy].x = -200;
+        allEnemies[enemy].speed = 0;
+    };
 }
 
 //this is all it takes to start the player object.
@@ -157,12 +169,13 @@ function gameMessage(msg){
 
 
 document.getElementById("start").addEventListener("click", function(){
+    document.getElementById("start").style.display = "none";
     document.getElementById("headline").style.display = "none";
     restartEnemies();
 });
 
 document.getElementById("restart").addEventListener("click", function(){
-    document.getElementById("game").style.display = "block";
+    document.getElementById("game").style.display = "inline";
     document.getElementById("headline").style.display = "none";
     restartEnemies();
 });

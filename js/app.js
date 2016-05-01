@@ -1,9 +1,35 @@
 // variables to hold values...
     var player_base_move = 30;
     var allEnemies = [];
+    var allGems = [];
     var score = 0;
     var lives = 3;
 
+// Gems
+var Gem = function(gem_x, gem_y) {
+    this.x = gem_x;
+    this.y = gem_y;
+    //image sprite
+    this.sprite = 'images/Gem Blue.png';
+};
+
+Gem.prototype.update = function() {
+
+};
+
+// Draw the enemy on the screen, required method for game
+Gem.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+for (var gem = 0; gem < 3; gem++ ) {
+    var place_x = Math.floor(Math.random() * 300 + 30);
+    var place_y = Math.floor(Math.random() * 300 + 30);
+    var newGem = new Gem(place_x, place_y);
+    console.log(newGem);
+    allGems.push(newGem);
+}
+console.log(allGems);
 
 // Enemies our player must avoid
 var Enemy = function(enemy_x, enemy_y, startSpeed) {

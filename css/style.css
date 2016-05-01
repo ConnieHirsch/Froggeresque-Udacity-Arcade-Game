@@ -26,7 +26,13 @@ button,
 #startScreen {
   display: block;
 }
-#restart {
+#start,
+#restart,
+#replay {
+  background-color: limegreen;
+}
+#restart,
+#replay {
   display: none;
 }
 #headline {

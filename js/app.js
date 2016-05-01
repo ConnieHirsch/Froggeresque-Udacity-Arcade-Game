@@ -55,7 +55,12 @@ Enemy.prototype.findCollision = function(){
         lives--;
         document.getElementById("lives").value = lives;
         if (lives < 1) {
+            parkEnemies();
+            score = 0;
+            lives = 0;
             gameMessage("I'm sorry, you're out of lives!");
+            hideRestart();
+            showReplay();
         } else {
         player.reset("You lost, please Restart!");
         }
@@ -171,7 +176,7 @@ document.addEventListener('keyup', function(e) {
 function gameMessage(msg){
     document.getElementById("headline").style.display = "block";
     document.getElementById("headline").innerHTML = msg;
-        document.getElementById("game").style.display = "none";
+    document.getElementById("game").style.display = "none";
 }
 
 
@@ -187,3 +192,27 @@ document.getElementById("restart").addEventListener("click", function(){
     document.getElementById("headline").style.display = "none";
     restartEnemies();
 });
+
+document.getElementById("replay").addEventListener("click", function() {
+    hideReplay();
+    hideRestart();
+    document.getElementById("headline").style.display = "none";
+    document.getElementById("game").style.display = "inline";
+    player.x = 200;
+    player.y = 410;
+    score = 0;
+    lives = 3;
+    restartEnemies();
+});
+
+function hideRestart(){
+    document.getElementById("restart").style.display = "none";
+}
+
+function showReplay() {
+    document.getElementById("replay").style.display = "inline";
+}
+
+function hideReplay() {
+    document.getElementById("replay").style.display = "none";
+}

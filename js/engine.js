@@ -29,6 +29,7 @@ var Engine = (function(global) {
     canvas.height = 606;
     canvas.id = "game";
     //doc.body.appendChild(canvas);
+    // CHANGE: append canvas element to HTML gameArea to better place it on page.
     doc.getElementById("gameArea").appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
@@ -161,9 +162,6 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        //alert("This pauses the start?");
-        //main();
-        //document.getElementById("start").style.display = "inline";
         // noop
     }
 
@@ -171,6 +169,7 @@ var Engine = (function(global) {
      * draw our game level. Then set init as the callback method, so that when
      * all of these images are properly loaded our game will start.
      */
+     // CHANGE: added some additional images for game use
     Resources.load([
         'images/stone-block.png',
         'images/water-block.png',
@@ -180,7 +179,8 @@ var Engine = (function(global) {
         'images/char-pink-girl.png',
         'images/char-cat-girl.png',
         'images/char-horn-girl.png',
-        'images/char-princess-girl.png'
+        'images/char-princess-girl.png',
+        'images/Gem Blue.png'
     ]);
     Resources.onReady(init);
 

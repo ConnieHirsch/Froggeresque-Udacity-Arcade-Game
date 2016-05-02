@@ -4,7 +4,10 @@
     var allGems = [];
     var score = 0;
     var lives = 3;
+    var pngWidth = 56; //total width of png: 101
+    var pngHeight = 56; // total height of png : 171
 
+/////////////////////////////////////////////////////////////////////////////
 // Gems
 var Gem = function(gem_x, gem_y) {
     this.x = gem_x;
@@ -19,14 +22,30 @@ Gem.prototype.update = function(gem_x, gem_y) {
 };
 
 Gem.prototype.reset = function(){
+    console.log("Gem reset");
+    this.playerCollision();
     var place_x = Math.floor(Math.random() * 450 + 30);
     var place_y = Math.floor(Math.random() * 250 + 30);
-    console.log("Gem reset, now x:" + place_x + " y:" + place_y + "!");
+    //console.log("Gem reset, now x:" + place_x + " y:" + place_y + "!");
     this.update(place_x, place_y);
 };
 // Draw the enemy on the screen, required method for game
 Gem.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+// method to handle collisions!
+Gem.prototype.playerCollision = function(){
+
+console.log("checking for gem interaction x:" + this.x + " y:" + this.y);
+    if (player.x < this.x + pngWidth &&
+        player.x + pngWidth > this.x &&
+        player.y < this.y + pngHeight &&
+        player.y + pngHeight > this.y) {
+        //collision?
+        console.log("Player Collision!!!1!");
+        player.reset();
+        }
 };
 
 // place the gems
@@ -80,9 +99,6 @@ Enemy.prototype.render = function() {
 // method to handle collisions!
 Enemy.prototype.findCollision = function(){
 
-    var pngWidth = 56; //total width of png: 101
-    var pngHeight = 56; // total height of png : 171
-
     if (player.x < this.x + pngWidth &&
         player.x + pngWidth > this.x &&
         player.y < this.y + pngHeight &&
@@ -108,19 +124,16 @@ Enemy.prototype.findCollision = function(){
 // method to handle collisions!
 Enemy.prototype.gemCollision = function(){
 
-    var pngWidth = 56; //total width of png: 101
-    var pngHeight = 56; // total height of png : 171
-
-// there are multiple gems
+    // there are multiple gems!
     for (var gem = 0; gem < allGems.length; gem++){
     if (allGems[gem].x < this.x + pngWidth &&
         allGems[gem].x + pngWidth > this.x &&
         allGems[gem].y < this.y + pngHeight &&
         allGems[gem].y + pngHeight > this.y) {
         //collision?
-        console.log("Gem Collision!!!1!");
+        //console.log("Gem Collision!!!1!");
         allGems[gem].reset();
-    }
+        }
 
     }
 

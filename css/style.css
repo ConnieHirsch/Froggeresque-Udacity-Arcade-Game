@@ -40,3 +40,20 @@ button,
   font-family: Impact, sans-serif;
   font-size: 40px;
 }
+/*Avatars Section*/
+#avatar {
+  color: royalblue;
+}
+#characters button {
+  display: inline;
+  border: 1px double blue;
+  text-align: center;
+}
+#characters button:hover {
+  background-color: royalblue;
+  color: limegreen;
+}
+img {
+  vertical-align: middle;
+  margin: -40px -10px -20px 0px;
+}

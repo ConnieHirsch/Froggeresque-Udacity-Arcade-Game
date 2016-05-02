@@ -304,3 +304,17 @@ function showReplay() {
 function hideReplay() {
     document.getElementById("replay").style.display = "none";
 }
+
+/////////////////////////////////////////////////////////////////////////////
+// Avatars-specific
+var allButtons = document.getElementsByTagName("button");
+var characterButtons = [];
+for (var btn = 0; btn < allButtons.length; btn++) {
+    //console.log(allButtons[btn].parentNode.id);
+    if (allButtons[btn].parentNode.id === "characters") {
+    console.log(allButtons[btn].innerHTML);
+    characterButtons.push(allButtons[btn]);
+    }
+}
+console.log(characterButtons);
+

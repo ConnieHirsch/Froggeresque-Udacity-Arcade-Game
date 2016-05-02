@@ -168,10 +168,8 @@ Player.prototype.handleInput = function(event) {
     }
 
     if (player.y === -10) {
-        score++;
-        document.getElementById("score").value = score;
-        console.log(score);
-        player.reset("You WON!");
+        adjustScore();
+        player.reset("You WON this round!");
     }
     //console.log(this.ctlKey + ": I am at x" + this.x + ", y" + this.y);
 };
@@ -187,10 +185,10 @@ Player.prototype.gemCollision = function(){
     allGems[gem].y + pngHeight > this.y) {
         //collision?
         console.log("Player Gem Collision!!!1!");
-        allGems[gem].reset();
-        score++;
-        console.log(score);
-        document.getElementById("score").value = score;
+        // move the gem offscreen where it won't count anymore
+        allGems[gem].y = 1000;
+        // increment the score
+        adjustScore();
         }
     }
 
@@ -250,6 +248,14 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
+// increment the score
+function adjustScore() {
+        score++;
+        document.getElementById("score").value = score;
+        if (score >= 3) {
+            player.reset("You WON! You are the BEST!");
+        }
+};
 
 // take the success/failure/whatever message and send it on to the headline div
 function gameMessage(msg){

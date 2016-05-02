@@ -22,8 +22,6 @@ Gem.prototype.update = function(gem_x, gem_y) {
 };
 
 Gem.prototype.reset = function(){
-    console.log("Gem reset");
-    this.playerCollision();
     var place_x = Math.floor(Math.random() * 450 + 30);
     var place_y = Math.floor(Math.random() * 250 + 30);
     //console.log("Gem reset, now x:" + place_x + " y:" + place_y + "!");
@@ -32,20 +30,6 @@ Gem.prototype.reset = function(){
 // Draw the enemy on the screen, required method for game
 Gem.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-// method to handle collisions!
-Gem.prototype.playerCollision = function(){
-
-console.log("checking for gem interaction x:" + this.x + " y:" + this.y);
-    if (player.x < this.x + pngWidth &&
-        player.x + pngWidth > this.x &&
-        player.y < this.y + pngHeight &&
-        player.y + pngHeight > this.y) {
-        //collision?
-        console.log("Player Collision!!!1!");
-        player.reset();
-        }
 };
 
 // place the gems
@@ -134,9 +118,7 @@ Enemy.prototype.gemCollision = function(){
         //console.log("Gem Collision!!!1!");
         allGems[gem].reset();
         }
-
     }
-
 };
 
 // Now write your own player class ////////////////////////////////////////////
@@ -150,15 +132,20 @@ var Player = function() {
 };
 
 Player.prototype.update = function() {
-
+    //check to see if we've scored a gem.
+    this.gemCollision();
+    //NOTE: incrementing the score inside here means that it updates multiple times!
 };
+
 // event is win or lose, restart the player back to start square
 //  and, send on the game message.
 Player.prototype.reset = function(msg) {
     this.x = 200;
     this.y = 410;
     console.log("Player starts over!");
+    // pass msg on from whereever reset is called.
     gameMessage(msg);
+    // get enemies into position to start over
     parkEnemies();
 }
 
@@ -189,6 +176,25 @@ Player.prototype.handleInput = function(event) {
     //console.log(this.ctlKey + ": I am at x" + this.x + ", y" + this.y);
 };
 
+// method to handle collisions!
+Player.prototype.gemCollision = function(){
+
+    // there are multiple gems!
+    for (var gem = 0; gem < allGems.length; gem++){
+    if (allGems[gem].x < this.x + pngWidth &&
+    allGems[gem].x + pngWidth > this.x &&
+    allGems[gem].y < this.y + pngHeight &&
+    allGems[gem].y + pngHeight > this.y) {
+        //collision?
+        console.log("Player Gem Collision!!!1!");
+        allGems[gem].reset();
+        score++;
+        console.log(score);
+        document.getElementById("score").value = score;
+        }
+    }
+
+};
 
 ////////////////////////////////////////////////////////////////////////////
 // Game functions

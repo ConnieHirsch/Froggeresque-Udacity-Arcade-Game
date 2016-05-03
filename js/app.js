@@ -307,14 +307,31 @@ function hideReplay() {
 
 /////////////////////////////////////////////////////////////////////////////
 // Avatars-specific
+// first, narrow down the buttons that get the click event added -- only
+// the "characters" buttons
+
 var allButtons = document.getElementsByTagName("button");
 var characterButtons = [];
 for (var btn = 0; btn < allButtons.length; btn++) {
     //console.log(allButtons[btn].parentNode.id);
     if (allButtons[btn].parentNode.id === "characters") {
-    console.log(allButtons[btn].innerHTML);
+    //console.log(allButtons[btn].innerHTML);
     characterButtons.push(allButtons[btn]);
     }
 }
 console.log(characterButtons);
 
+// now add click event for the character buttons
+for (var btn = 0; btn < characterButtons.length; btn++){
+
+    var playerIcon = "images/char-" + characterButtons[btn].id + ".png";
+    var charID = characterButtons[btn].id;
+    console.log("adding " + playerIcon);
+
+    characterButtons[btn].addEventListener("click", function(){
+        console.log("clicked " + playerIcon);
+        //alert(charID);
+        player.sprite = playerIcon;
+        //player.sprite = "images/char-" + charID + ".png";
+    });
+}

@@ -313,25 +313,37 @@ function hideReplay() {
 var allButtons = document.getElementsByTagName("button");
 var characterButtons = [];
 for (var btn = 0; btn < allButtons.length; btn++) {
-    //console.log(allButtons[btn].parentNode.id);
     if (allButtons[btn].parentNode.id === "characters") {
-    //console.log(allButtons[btn].innerHTML);
     characterButtons.push(allButtons[btn]);
     }
 }
 console.log(characterButtons);
 
-// now add click event for the character buttons
-for (var btn = 0; btn < characterButtons.length; btn++){
+// now take that set of character buttons and assign click actions to them
+// but we'll have to make it a closure function
 
-    var playerIcon = "images/char-" + characterButtons[btn].id + ".png";
-    var charID = characterButtons[btn].id;
-    console.log("adding " + playerIcon);
-
-    characterButtons[btn].addEventListener("click", function(){
-        console.log("clicked " + playerIcon);
-        //alert(charID);
-        player.sprite = playerIcon;
-        //player.sprite = "images/char-" + charID + ".png";
-    });
+// actual action called by callback
+function changeCharacter(playerIcon) {
+  player.sprite = "images/char-" + playerIcon + ".png";
 }
+
+// callback to send on the data to the sprite change
+function makeChangeCallback(playerIcon) {
+  return function() {
+    changeCharacter(playerIcon);
+  };
+}
+
+// function to go through the character buttons, set up the value to be passed
+// on to the callback, and instantiate the onclick eventlistener.
+function setupPlayerIcon() {
+
+  for (var btn = 0; btn < characterButtons.length; btn++) {
+    var playerIcon = characterButtons[btn].id;
+    console.log("Setting up onclick for " + playerIcon);
+    characterButtons[btn].onclick = makeChangeCallback(playerIcon);
+  }
+}
+
+// and run the function now!
+setupPlayerIcon();

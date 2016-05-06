@@ -14,17 +14,32 @@ button,
 #score,
 #livesspan,
 #lives {
-  font-family: Impact, sans-serif;
-  font-size: 20px;
+  font-family: Sylfaen, serif;
+  font-size: 30px;
   background-color: palegreen;
   text-align: right;
 }
 #score,
 #lives {
-  width: 20px;
+  width: 30px;
+  margin-right: 15px;
 }
 #startScreen {
   display: block;
+  width: 500px;
+  margin: auto;
+}
+#logo {
+  margin-left: -60px;
+  margin-top: 20px;
+}
+#scoreboard {
+  margin-bottom: -40px;
+  margin-top: -20px;
+}
+#gameArea {
+  margin: auto;
+  clear: both;
 }
 #start,
 #restart,
@@ -56,4 +71,12 @@ button,
 img {
   vertical-align: middle;
   margin: -40px -10px -20px 0px;
+}
+
+/* General classes */
+.floatLeft {
+  float: left;
+}
+.floatRight {
+  float: right;
 }

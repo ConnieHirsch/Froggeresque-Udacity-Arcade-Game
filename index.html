@@ -7,7 +7,11 @@
 </head>
 <body>
     <div id="startScreen">
-      <h1>Froggeresque<h1>
+      <img src="images/froggeresque.png" id="logo" class="floatLeft">
+      <div class="floatRight" id="scoreboard">
+        <span id="scorespan">Score: <input id="score" value=0 readonly></span>
+        <span id="livesspan">Lives: <input id="lives" value=3 readonly></span>
+      </div>
     </div>
 
     <div id="headline"></div>
@@ -18,8 +22,6 @@
       <button id="start">Start</button>
       <button id="restart">Next Try</button>
       <button id="replay">Restart The Damn Game</button>
-      <span id="scorespan">Score: <input id="score" value=0 readonly></span>
-      <span id="livesspan">Lives: <input id="lives" value=3 readonly></span>
       <button id="about">About This Game</button>
     </div>
 

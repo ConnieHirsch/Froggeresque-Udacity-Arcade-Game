@@ -320,7 +320,7 @@ for (var btn = 0; btn < allButtons.length; btn++) {
 console.log(characterButtons);
 
 // now take that set of character buttons and assign click actions to them
-// but we'll have to make it a closure function
+// but we'll have to make it a CLOSURE FUNCTION
 
 // actual action called by callback
 function changeCharacter(playerIcon) {

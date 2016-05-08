@@ -23,6 +23,8 @@ button,
 #lives {
   width: 30px;
   margin-right: 15px;
+  text-align: center;
+  background-color: lavender;
 }
 #startScreen {
   display: block;
@@ -41,6 +43,10 @@ button,
   margin: auto;
   clear: both;
 }
+#menu {
+  clear: both;
+  padding-top: 20px;
+}
 #start,
 #restart,
 #replay {
@@ -51,9 +57,11 @@ button,
   display: none;
 }
 #headline {
+  clear: both;
   display: none;
   font-family: Impact, sans-serif;
   font-size: 40px;
+  padding-top: 50px;
 }
 /*Avatars Section*/
 #avatar {

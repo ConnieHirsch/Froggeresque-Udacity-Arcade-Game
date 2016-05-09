@@ -6,7 +6,7 @@
     var lives = 3;
     var pngWidth = 56; //total width of png: 101
     var pngHeight = 56; // total height of png : 171
-    const WINNING_SCORE = 2; // arbitrary WIN condition
+    const WINNING_SCORE = 4; // arbitrary WIN condition
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -152,9 +152,13 @@ Player.prototype.reset = function(msg) {
     this.x = 200;
     this.y = 410;
     console.log("Player starts over!");
-    gameMessage(msg);
-    // get enemies into position to start over
-    parkEnemies();
+    if (score >= WINNING_SCORE) {
+        restartGame();
+    } else {
+        gameMessage(msg);
+        // get enemies into position to start over
+        parkEnemies();
+    }
 }
 
 Player.prototype.render = function() {
@@ -177,7 +181,11 @@ Player.prototype.handleInput = function(event) {
 
     if (player.y === -10) {
         adjustScore();
-        player.reset("You WON this round!");
+        if (score >= WINNING_SCORE) {
+            restartGame();
+        } else {
+            player.reset("You WON this round!");
+        }
     }
     //console.log(this.ctlKey + ": I am at x" + this.x + ", y" + this.y);
 };
@@ -260,9 +268,6 @@ document.addEventListener('keyup', function(e) {
 function adjustScore() {
         score++;
         document.getElementById("score").value = score;
-        if (score >= WINNING_SCORE) {
-            player.reset("You WON! You are the BEST!");
-        }
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -276,16 +281,18 @@ function gameMessage(msg){
 }
 
 
-// Start button to begin game binding
+// 'Start' button to begin game binding
 document.getElementById("start").addEventListener("click", function(){
-    document.getElementById("start").style.display = "none";
-    document.getElementById("restart").style.display = "inline";
+    showStart();
+    hideRestart();
+    document.getElementById("game").style.display = "inline";
     document.getElementById("headline").style.display = "none";
     restartEnemies();
 });
 
 // Next turn button binding
 document.getElementById("restart").addEventListener("click", function(){
+    showReplay();
     document.getElementById("game").style.display = "inline";
     document.getElementById("headline").style.display = "none";
     restartEnemies();
@@ -293,8 +300,14 @@ document.getElementById("restart").addEventListener("click", function(){
 
 // Start over button binding
 document.getElementById("replay").addEventListener("click", function() {
+    restartGame();
+});
+
+// make the restart a function so that we can call it from player.reset too.
+function restartGame() {
     hideReplay();
     hideRestart();
+    showStart();
     document.getElementById("headline").style.display = "none";
     document.getElementById("game").style.display = "inline";
     player.x = 200;
@@ -304,10 +317,10 @@ document.getElementById("replay").addEventListener("click", function() {
     console.log("score reset to " + score);
     lives = 3;
     document.getElementById("lives").value = lives;
-    document.getElementById("start").style.display = "inline";
     restartEnemies();
     resetAllGems();
-});
+
+};
 
 function hideRestart(){
     document.getElementById("restart").style.display = "none";
@@ -324,6 +337,12 @@ function hideReplay() {
     document.getElementById("replay").style.display = "none";
 }
 
+function showStart() {
+        document.getElementById("start").style.display = "inline";
+}
+function hideStart() {
+        document.getElementById("start").style.display = "none";
+}
 /////////////////////////////////////////////////////////////////////////////
 // Avatars-specific
 // first, narrow down the buttons that get the click event added -- only

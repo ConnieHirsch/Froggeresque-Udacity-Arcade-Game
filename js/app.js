@@ -6,6 +6,8 @@
     var lives = 3;
     var pngWidth = 56; //total width of png: 101
     var pngHeight = 56; // total height of png : 171
+    const WINNING_SCORE = 2; // arbitrary WIN condition
+
 
 /////////////////////////////////////////////////////////////////////////////
 // Gems
@@ -42,7 +44,13 @@ for (var gem = 0; gem < 3; gem++ ) {
 }
 console.log(allGems);
 
-
+// if we restart the game, all gems have to be replaced on teh board
+function resetAllGems(){
+    for (var gem = 0; gem < 3; gem++ ) {
+    allGems[gem].y = Math.floor(Math.random() * 300 + 30);
+    allGems[gem].x = Math.floor(Math.random() * 300 + 30);
+    }
+};
 /////////////////////////////////////////////////////////////////
 // Enemies our player must avoid
 var Enemy = function(enemy_x, enemy_y, startSpeed) {
@@ -95,11 +103,11 @@ Enemy.prototype.findCollision = function(){
             parkEnemies();
             score = 0;
             lives = 0;
-            gameMessage("I'm sorry, you're out of lives!");
+            gameMessage("Sorry, you're out of lives! Start over?");
             hideRestart();
             showReplay();
         } else {
-        player.reset("You lost, please Restart!");
+        player.reset("You lost, please replay!");
         }
     }
 
@@ -128,6 +136,7 @@ Enemy.prototype.gemCollision = function(){
 var Player = function() {
     this.x = 200;
     this.y = 410;
+    // NOTE: default player is a girl!
     this.sprite = 'images/char-pink-girl.png';
 };
 
@@ -143,7 +152,6 @@ Player.prototype.reset = function(msg) {
     this.x = 200;
     this.y = 410;
     console.log("Player starts over!");
-    // pass msg on from whereever reset is called.
     gameMessage(msg);
     // get enemies into position to start over
     parkEnemies();
@@ -237,7 +245,7 @@ function parkEnemies() {
 var player = new Player();
 
 // This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+// Player.handleInput() method.
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
@@ -252,10 +260,13 @@ document.addEventListener('keyup', function(e) {
 function adjustScore() {
         score++;
         document.getElementById("score").value = score;
-        if (score >= 3) {
+        if (score >= WINNING_SCORE) {
             player.reset("You WON! You are the BEST!");
         }
 };
+
+///////////////////////////////////////////////////////////////////////////////
+// Game Messaging
 
 // take the success/failure/whatever message and send it on to the headline div
 function gameMessage(msg){
@@ -289,12 +300,20 @@ document.getElementById("replay").addEventListener("click", function() {
     player.x = 200;
     player.y = 410;
     score = 0;
+    document.getElementById("score").value = score;
+    console.log("score reset to " + score);
     lives = 3;
+    document.getElementById("lives").value = lives;
+    document.getElementById("start").style.display = "inline";
     restartEnemies();
+    resetAllGems();
 });
 
 function hideRestart(){
     document.getElementById("restart").style.display = "none";
+}
+function showRestart() {
+    document.getElementById("restart").style.display = "inline";
 }
 
 function showReplay() {

@@ -66,6 +66,14 @@ button,
 /*Avatars Section*/
 #avatar {
   color: royalblue;
+  display: none;
+  clear: both;
+}
+#avatar h1,
+#avatar h2,
+#avatar h3 {
+  display: block;
+  padding-top: 30px;
 }
 #characters button {
   display: inline;

@@ -152,13 +152,11 @@ Player.prototype.reset = function(msg) {
     this.x = 200;
     this.y = 410;
     console.log("Player starts over!");
-    if (score >= WINNING_SCORE) {
-        restartGame();
-    } else {
+
         gameMessage(msg);
         // get enemies into position to start over
         parkEnemies();
-    }
+
 }
 
 Player.prototype.render = function() {
@@ -181,10 +179,11 @@ Player.prototype.handleInput = function(event) {
 
     if (player.y === -10) {
         adjustScore();
-        if (score >= WINNING_SCORE) {
+        var leftToGo = WINNING_SCORE-score;
+        if (score >= WINNING_SCORE || leftToGo === 0) {
             restartGame();
         } else {
-            player.reset("You WON this round!");
+            player.reset("You WON this round!<br/>Only " + leftToGo + " points to go!");
         }
     }
     //console.log(this.ctlKey + ": I am at x" + this.x + ", y" + this.y);
@@ -268,6 +267,9 @@ document.addEventListener('keyup', function(e) {
 function adjustScore() {
         score++;
         document.getElementById("score").value = score;
+        if (score >= WINNING_SCORE) {
+            restartGame();
+        }
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -303,13 +305,20 @@ document.getElementById("replay").addEventListener("click", function() {
     restartGame();
 });
 
+// Choose Avatar Button
+document.getElementById("chooseAvatar").addEventListener("click", function() {
+    console.log("Calling avatar function");
+    chooseAvatar();
+});
 // make the restart a function so that we can call it from player.reset too.
 function restartGame() {
+    console.log("Resetting game over");
     hideReplay();
     hideRestart();
     showStart();
-    document.getElementById("headline").style.display = "none";
-    document.getElementById("game").style.display = "inline";
+    document.getElementById("headline").style.display = "block";
+    document.getElementById("headline").innerHTML = "Terrific!  You WON!<br/> Play Again?";
+    document.getElementById("game").style.display = "none";
     player.x = 200;
     player.y = 410;
     score = 0;
@@ -321,6 +330,13 @@ function restartGame() {
     resetAllGems();
 
 };
+
+// what the Choose Player Avatar button DOES
+function chooseAvatar () {
+    document.getElementById("avatar").style.display = "block";
+    document.getElementById("gameArea").style.display = "none";
+    document.getElementById("menu").style.display = "none";
+}
 
 function hideRestart(){
     document.getElementById("restart").style.display = "none";
@@ -343,6 +359,7 @@ function showStart() {
 function hideStart() {
         document.getElementById("start").style.display = "none";
 }
+
 /////////////////////////////////////////////////////////////////////////////
 // Avatars-specific
 // first, narrow down the buttons that get the click event added -- only
@@ -363,6 +380,10 @@ console.log(characterButtons);
 // actual action called by callback
 function changeCharacter(playerIcon) {
   player.sprite = "images/char-" + playerIcon + ".png";
+  //And when we've changed the image, put the screen back the way it was...
+  document.getElementById("avatar").style.display = "none";
+  document.getElementById("menu").style.display = "inline";
+  document.getElementById("gameArea").style.display = "block";
 }
 
 // callback to send on the data to the sprite change

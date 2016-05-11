@@ -51,6 +51,7 @@ function resetAllGems(){
     allGems[gem].x = Math.floor(Math.random() * 300 + 30);
     }
 };
+
 /////////////////////////////////////////////////////////////////
 // Enemies our player must avoid
 var Enemy = function(enemy_x, enemy_y, startSpeed) {
@@ -310,6 +311,7 @@ document.getElementById("chooseAvatar").addEventListener("click", function() {
     console.log("Calling avatar function");
     chooseAvatar();
 });
+
 // make the restart a function so that we can call it from player.reset too.
 function restartGame() {
     console.log("Resetting game over");
@@ -332,6 +334,7 @@ function restartGame() {
 };
 
 // what the Choose Player Avatar button DOES
+//
 function chooseAvatar () {
     document.getElementById("avatar").style.display = "block";
     document.getElementById("gameArea").style.display = "none";

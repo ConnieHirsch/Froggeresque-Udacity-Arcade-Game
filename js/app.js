@@ -108,7 +108,7 @@ Enemy.prototype.findCollision = function(){
             hideRestart();
             showReplay();
         } else {
-        player.reset("You lost, please replay!");
+        player.reset(lives + " lives left, continue?");
         }
     }
 
@@ -205,6 +205,10 @@ Player.prototype.gemCollision = function(){
         allGems[gem].y = 1000;
         // increment the score
         adjustScore();
+        // test if we've gotten to WIN...
+        if (score >= WINNING_SCORE) {
+            restartGame();
+            }
         }
     }
 
@@ -229,7 +233,7 @@ for (var path = 0; path < paths.length; path++ ) {
 console.log(allEnemies);
 
 // all bugs start off at 0 speed offscreen, only get moving when we tell them to
-function restartEnemies () {
+function startEnemies () {
     // add activity to offscreen enemies
     for (var enemy = 0; enemy < allEnemies.length; enemy++){
         var speed = Math.floor(Math.random() * 140 + 40);
@@ -268,9 +272,6 @@ document.addEventListener('keyup', function(e) {
 function adjustScore() {
         score++;
         document.getElementById("score").value = score;
-        if (score >= WINNING_SCORE) {
-            restartGame();
-        }
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -290,7 +291,7 @@ document.getElementById("start").addEventListener("click", function(){
     hideRestart();
     document.getElementById("game").style.display = "inline";
     document.getElementById("headline").style.display = "none";
-    restartEnemies();
+    startEnemies();
 });
 
 // Next turn button binding
@@ -298,7 +299,7 @@ document.getElementById("restart").addEventListener("click", function(){
     showReplay();
     document.getElementById("game").style.display = "inline";
     document.getElementById("headline").style.display = "none";
-    restartEnemies();
+    startEnemies();
 });
 
 // Start over button binding
@@ -328,7 +329,7 @@ function restartGame() {
     console.log("score reset to " + score);
     lives = 3;
     document.getElementById("lives").value = lives;
-    restartEnemies();
+    //startEnemies();
     resetAllGems();
 
 };

@@ -105,6 +105,7 @@ Enemy.prototype.findCollision = function(){
             score = 0;
             lives = 0;
             gameMessage("Sorry, you're out of lives! Start over?");
+            hideStart();
             hideRestart();
             showReplay();
         } else {
@@ -315,13 +316,18 @@ document.getElementById("chooseAvatar").addEventListener("click", function() {
 
 // make the restart a function so that we can call it from player.reset too.
 function restartGame() {
-    console.log("Resetting game over");
+    console.log("Resetting game over, score: " + score + " / lives: " + lives);
+    if (lives === 0) {
+    document.getElementById("headline").style.display = "none";
+    document.getElementById("game").style.display = "inline";
+    } else {
+    document.getElementById("headline").style.display = "block";
+    document.getElementById("headline").innerHTML = "Terrific! You WON!<br/> Play Again?";
+    document.getElementById("game").style.display = "none";
+    }
     hideReplay();
     hideRestart();
     showStart();
-    document.getElementById("headline").style.display = "block";
-    document.getElementById("headline").innerHTML = "Terrific!  You WON!<br/> Play Again?";
-    document.getElementById("game").style.display = "none";
     player.x = 200;
     player.y = 410;
     score = 0;

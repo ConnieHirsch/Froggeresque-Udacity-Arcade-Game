@@ -1,4 +1,4 @@
-Classic Arcade Game Clone project
+<h1>Classic Arcade Game Clone project</h1>
 
 Download or Play Online
 

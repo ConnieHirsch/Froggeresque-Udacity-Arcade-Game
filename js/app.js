@@ -104,7 +104,7 @@ Enemy.prototype.findCollision = function(){
             parkEnemies();
             score = 0;
             lives = 0;
-            gameMessage("<img src='images/enemy-bug.png'><p>Sorry, you're out of lives!<br/>Start over?</p>");
+            gameMessage("<img src='images/enemy-bug.png' alt='Enemy Bug picture'><p>Sorry, you're out of lives!<br/>Start over?</p>");
             hideStart();
             hideRestart();
             showReplay();
@@ -334,7 +334,7 @@ function restartGame() {
     // get current player icon (it can have been changeed) and display it with
     //  won msg
     var sprite = player.sprite;
-    var playerPic = "<img src='" + sprite + "'>";
+    var playerPic = "<img src='" + sprite + "' alt='Current player icon'>";
     document.getElementById("headline").innerHTML = playerPic + "<p>Terrific! You WON!<br/> Play Again?</p>";
     document.getElementById("game").style.display = "none";
     }

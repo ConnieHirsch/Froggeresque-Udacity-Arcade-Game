@@ -104,7 +104,7 @@ Enemy.prototype.findCollision = function(){
             parkEnemies();
             score = 0;
             lives = 0;
-            gameMessage("Sorry, you're out of lives! Start over?");
+            gameMessage("<img src='images/enemy-bug.png'><p>Sorry, you're out of lives!<br/>Start over?</p>");
             hideStart();
             hideRestart();
             showReplay();
@@ -322,7 +322,7 @@ function restartGame() {
     document.getElementById("game").style.display = "inline";
     } else {
     document.getElementById("headline").style.display = "block";
-    document.getElementById("headline").innerHTML = "Terrific! You WON!<br/> Play Again?";
+    document.getElementById("headline").innerHTML = "<p>Terrific! You WON!<br/> Play Again?</p>";
     document.getElementById("game").style.display = "none";
     }
     hideReplay();

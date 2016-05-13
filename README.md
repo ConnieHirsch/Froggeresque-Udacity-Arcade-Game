@@ -1,6 +1,17 @@
-frontend-nanodegree-arcade-game
-===============================
+Classic Arcade Game Clone project
 
-Students should use this [rubric](https://www.udacity.com/course/viewer/#!/c-nd001/l-2696458597/m-2687128535) for self-checking their submission.
+Download or Play Online
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+How to Play
+
+About This Game
+
+Attributions
+
+"PlanetCute" art by Daniel Cook (lostgarden.com)
+
+Game engine.js and resources.js by Udacity
+
+License
+
+The project is licensed under the <a href="license.txt">MIT license</a>.

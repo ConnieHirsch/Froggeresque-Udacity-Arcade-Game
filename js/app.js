@@ -322,7 +322,11 @@ function restartGame() {
     document.getElementById("game").style.display = "inline";
     } else {
     document.getElementById("headline").style.display = "block";
-    document.getElementById("headline").innerHTML = "<p>Terrific! You WON!<br/> Play Again?</p>";
+    // get current player icon (it can have been changeed) and display it with
+    //  won msg
+    var sprite = player.sprite;
+    var playerPic = "<img src='" + sprite + "'>";
+    document.getElementById("headline").innerHTML = playerPic + "<p>Terrific! You WON!<br/> Play Again?</p>";
     document.getElementById("game").style.display = "none";
     }
     hideReplay();

@@ -21,8 +21,9 @@
 
 <p>If you make it across to the far edge, you score a point.  When you have accumulated 6 points, you win.</p>
 
-<p>Also to score points</p>
-<h2>About This Game</h2>
+<p>Also to score points there are random Gems scattered across the game area.  Capture those to add points as well!  But be quick, because if a bug gets there first, the Gem gets knocked to a random location.</p>
+
+<p>If you'd like a different player icon, there's a handy <strong>Change Player Icon</strong> button that will bring up several tasteful player pictures to choose from.</p>
 
 <h2>Attributions</h2>
 

@@ -314,6 +314,14 @@ document.getElementById("chooseAvatar").addEventListener("click", function() {
     chooseAvatar();
 });
 
+// ABOUT button...
+
+document.getElementById("about").addEventListener("click", function() {
+    //document.getElementById("aboutThisGame").innerHTML = "<iframe src='README.md' seamless></iframe>";
+    document.getElementById("aboutThisGame").innerHTML = "<object type='text/html' data='README.md'></object>";
+    //document.getElementById("aboutThisGame").innerHTML = "<link rel='import' href='README.md'>";
+});
+
 // make the restart a function so that we can call it from player.reset too.
 function restartGame() {
     console.log("Resetting game over, score: " + score + " / lives: " + lives);

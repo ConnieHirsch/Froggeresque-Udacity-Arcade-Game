@@ -13,7 +13,8 @@ button,
 #scorespan,
 #score,
 #livesspan,
-#lives {
+#lives,
+#closeAbout {
   font-family: Sylfaen, serif;
   font-size: 30px;
   background-color: palegreen;
@@ -71,6 +72,25 @@ button,
 */  float: left;
   margin-bottom: 20px;
   margin-right: 10px;
+}
+
+#aboutThisGame {
+    font-family: Sylfaen, serif;
+  width: 500px;
+  margin: auto;
+  clear: both;
+  text-align: left;
+    border: 1px double blue;
+    padding-top: 40px;
+  /*display: none;*/
+}
+
+#aboutThisGame img {
+  margin: 5px 10px;
+}
+#aboutThisGame button {
+  background-color: limegreen;
+  float: right;
 }
 /*Avatars Section*/
 #avatar {

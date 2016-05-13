@@ -315,11 +315,12 @@ document.getElementById("chooseAvatar").addEventListener("click", function() {
 });
 
 // ABOUT button...
-
 document.getElementById("about").addEventListener("click", function() {
-    //document.getElementById("aboutThisGame").innerHTML = "<iframe src='README.md' seamless></iframe>";
-    document.getElementById("aboutThisGame").innerHTML = "<object type='text/html' data='README.md'></object>";
-    //document.getElementById("aboutThisGame").innerHTML = "<link rel='import' href='README.md'>";
+    document.getElementById("aboutThisGame").style.display = "block";
+});
+// close ABOUT button...
+document.getElementById("closeAbout").addEventListener("click", function() {
+    document.getElementById("aboutThisGame").style.display = "none";
 });
 
 // make the restart a function so that we can call it from player.reset too.

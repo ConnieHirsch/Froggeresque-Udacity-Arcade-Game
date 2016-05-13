@@ -80,9 +80,9 @@ button,
   margin: auto;
   clear: both;
   text-align: left;
-    border: 1px double blue;
+/*    border: 1px double blue;*/
     padding-top: 40px;
-  /*display: none;*/
+  display: none;
 }
 
 #aboutThisGame img {

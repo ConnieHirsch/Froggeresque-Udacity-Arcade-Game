@@ -50,7 +50,7 @@ function resetAllGems() {
         allGems[gem].y = Math.floor(Math.random() * 300 + 30);
         allGems[gem].x = Math.floor(Math.random() * 300 + 30);
     }
-};
+}
 
 /////////////////////////////////////////////////////////////////
 // Enemies our player must avoid
@@ -241,7 +241,7 @@ function startEnemies() {
         var startingLine = Math.floor(Math.random() * 300 + 100);
         allEnemies[enemy].x = -startingLine;
         allEnemies[enemy].speed = speed;
-    };
+    }
     console.log("Restarted enemies!");
     console.log(allEnemies);
 }
@@ -251,7 +251,7 @@ function parkEnemies() {
     for (var enemy = 0; enemy < allEnemies.length; enemy++) {
         allEnemies[enemy].x = -200;
         allEnemies[enemy].speed = 0;
-    };
+    }
 }
 
 //this is all it takes to start the player object.
@@ -273,7 +273,7 @@ document.addEventListener('keyup', function(e) {
 function adjustScore() {
     score++;
     document.getElementById("score").value = score;
-};
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Game Messaging
@@ -352,7 +352,7 @@ function restartGame() {
     //startEnemies();
     resetAllGems();
 
-};
+}
 
 // what the Choose Player Avatar button DOES
 //

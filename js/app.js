@@ -1,5 +1,5 @@
 // variables to hold values...
-var player_base_move = 30;
+//var player_base_move = 30;
 var allEnemies = [];
 var allGems = [];
 var score = 0;
@@ -7,6 +7,10 @@ var lives = 3;
 var pngWidth = 56; //total width of png: 101
 var pngHeight = 56; // total height of png : 171
 const WINNING_SCORE = 4; // arbitrary WIN condition
+
+
+var app = app || {};
+app.player_base_move = 30;
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -170,13 +174,13 @@ Player.prototype.handleInput = function(event) {
     //console.log(this.ctlKey);
 
     if (this.ctlKey === 'left' && this.x > 0) {
-        this.x -= player_base_move;
+        this.x -= app.player_base_move;
     } else if (this.ctlKey === 'right' && this.x < 410) {
-        this.x = this.x + player_base_move;
+        this.x = this.x + app.player_base_move;
     } else if (this.ctlKey === 'up' && this.y > 18) {
-        this.y = this.y - player_base_move;
+        this.y = this.y - app.player_base_move;
     } else if (this.ctlKey === 'down' && this.y < 410) {
-        this.y = this.y + player_base_move;
+        this.y = this.y + app.player_base_move;
     }
 
     if (player.y === -10) {

@@ -18,6 +18,14 @@ app.pngWidth = 56; //total width of png: 101
 app.pngHeight = 56; // total height of png : 171
 app.allEnemies = []; // holder for array of Enemies
 app.allGems = []; // holder for Gems.
+// global functions also go here.
+app.parkEnemies = function() {
+    // hide them offscreen until player is ready to restart
+    for (var enemy = 0; enemy < app.allEnemies.length; enemy++) {
+        app.allEnemies[enemy].x = -200;
+        app.allEnemies[enemy].speed = 0;
+    }
+}
 
 // Mover is base class for Players, Bugs and Gems because they have enough
 //  common code to share some methods and functions
@@ -42,7 +50,7 @@ Mover.prototype.render = function() {
 Mover.prototype.sayHello = function() {
     console.log("Hello World!");
 };
-var mover = new Mover(200, 200, "images/Heart.png")
+//var mover = new Mover(200, 200, "images/Heart.png")
 
 
 /////////////////////////////////////////////////////////////////
@@ -83,7 +91,7 @@ Enemy.prototype.reset = function(speed) {
     return speed;
 };
 
-var enemyNEW = new Enemy(200, 200, "images/Heart.png", 50);
+//var enemyNEW = new Enemy(200, 200, "images/Heart.png", 50);
 
 // method to handle collisions!
 Enemy.prototype.findCollision = function() {
@@ -97,7 +105,7 @@ Enemy.prototype.findCollision = function() {
         app.lives--;
         document.getElementById("lives").value = app.lives;
         if (app.lives < 1) {
-            parkEnemies();
+            app.parkEnemies();
             app.score = 0;
             app.lives = 0;
             gameMessage("<img src='images/enemy-bug.png' alt='Enemy Bug picture'><p>Sorry, you're out of lives!<br/>Start over?</p>");
@@ -197,7 +205,7 @@ Player.prototype.reset = function(msg) {
 
     gameMessage(msg);
     // get enemies into position to start over
-    parkEnemies();
+    app.parkEnemies();
 
 }
 
@@ -286,13 +294,6 @@ function startEnemies() {
     //console.log(app.allEnemies);
 }
 
-function parkEnemies() {
-    // hide them offscreen until player is ready to restart
-    for (var enemy = 0; enemy < app.allEnemies.length; enemy++) {
-        app.allEnemies[enemy].x = -200;
-        app.allEnemies[enemy].speed = 0;
-    }
-}
 
 //this is all it takes to start the player object.
 var player = new Player();

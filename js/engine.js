@@ -158,7 +158,7 @@ var Engine = (function(global) {
         });
 
         player.render();
-        mover.render();
+        //mover.render();
     }
 
     /* This function does nothing but it could have been a good place to

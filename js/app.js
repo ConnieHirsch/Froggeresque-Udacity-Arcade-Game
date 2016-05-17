@@ -82,44 +82,8 @@ Enemy.prototype.reset = function(speed) {
     //console.log("Bug reset, new speed is " + speed + "!");
     return speed;
 };
+
 var enemyNEW = new Enemy(200, 200, "images/Heart.png", 50);
-
-
-// older code /////////////////////////////////////////////////////////
-var Enemy = function(enemy_x, enemy_y, startSpeed) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-    this.x = enemy_x;
-    this.y = enemy_y;
-    this.speed = startSpeed;
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
-};
-
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
-    this.x = this.x + this.speed * dt;
-    if (this.x > 505) {
-        this.speed = this.reset();
-    }
-    // invoke collision detection
-    this.findCollision();
-    this.gemCollision();
-};
-
-Enemy.prototype.reset = function(speed) {
-    this.x = -100;
-    var speed = Math.floor(Math.random() * 140 + 40);
-    //console.log("Bug reset, new speed is " + speed + "!");
-    return speed;
-};
-
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
 
 // method to handle collisions!
 Enemy.prototype.findCollision = function() {
@@ -303,7 +267,7 @@ for (var path = 0; path < paths.length; path++) {
     //var startingLine = Math.floor(Math.random() * 300 + 100);
     // now we START all enemies offscreen, and let the player 'restart' them
     // when they are ready to actually START
-    var newEnemy = new Enemy(-200, paths[path], 0);
+    var newEnemy = new Enemy(-200, paths[path],'images/enemy-bug.png', 0);
     //console.log(newEnemy);
     app.allEnemies.push(newEnemy);
 }

@@ -47,11 +47,90 @@ Mover.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Mover.prototype.sayHello = function() {
-    console.log("Hello World!");
-};
-//var mover = new Mover(200, 200, "images/Heart.png")
+////////////////////////////////////////////////////////////////////////////////////
+//  Player Class!
+// Also based on Mover Class and prototyped accordingly.
+////////////////////////////////////////////////////////////////////////////////////
+/*
 
+*/
+function Player(player_x, player_y, sprite) {
+    //Calling the parent contructor -- pass the first three items
+    Mover.call(this, player_x, player_y, sprite);
+    // there are no unique values to be added to the Player object here!
+};
+// Create the Player.prototype object that inherits from Mover
+Player.prototype = Object.create(Mover.prototype);
+// Set "constructor" property
+Player.prototype.constructor = Enemy;
+
+Player.prototype.update = function() {
+    //check to see if we've scored a gem.
+    this.gemCollision();
+    //NOTE: incrementing the score inside here means that it updates multiple times!
+};
+
+// event is win or lose, restart the player back to start square
+//  and, send on the game message.
+Player.prototype.reset = function(msg) {
+    this.x = 200;
+    this.y = 410;
+    //console.log("Player starts over!");
+    app.gameMessage(msg);
+    // get enemies into position to start over
+    app.parkEnemies();
+
+}
+
+Player.prototype.handleInput = function(event) {
+    this.ctlKey = event;
+    //console.log(this.ctlKey);
+
+    if (this.ctlKey === 'left' && this.x > 0) {
+        this.x -= app.player_base_move;
+    } else if (this.ctlKey === 'right' && this.x < 410) {
+        this.x = this.x + app.player_base_move;
+    } else if (this.ctlKey === 'up' && this.y > 18) {
+        this.y = this.y - app.player_base_move;
+    } else if (this.ctlKey === 'down' && this.y < 410) {
+        this.y = this.y + app.player_base_move;
+    }
+
+    if (player.y === -10) {
+        app.adjustScore();
+        var leftToGo = app.WINNING_SCORE - app.score;
+        if (app.score >= app.WINNING_SCORE || leftToGo === 0) {
+            app.restartGame();
+        } else {
+            player.reset("You WON this round!<br/>Only " + leftToGo + " points to go!");
+        }
+    }
+    //console.log(this.ctlKey + ": I am at x" + this.x + ", y" + this.y);
+};
+
+// method to handle collisions!
+Player.prototype.gemCollision = function() {
+
+    // there are multiple gems!
+    for (var gem = 0; gem < app.allGems.length; gem++) {
+        if (app.allGems[gem].x < this.x + app.pngWidth &&
+            app.allGems[gem].x + app.pngWidth > this.x &&
+            app.allGems[gem].y < this.y + app.pngHeight &&
+            app.allGems[gem].y + app.pngHeight > this.y) {
+            //collision?
+           // console.log("Player Gem Collision!!!1!");
+            // move the gem offscreen where it won't count anymore
+            app.allGems[gem].y = 1000;
+            // increment the score
+            app.adjustScore();
+            // test if we've gotten to WIN...
+            if (app.score >= app.WINNING_SCORE) {
+                app.restartGame();
+            }
+        }
+    }
+
+};
 
 /////////////////////////////////////////////////////////////////
 // Enemies our player must avoid
@@ -67,10 +146,6 @@ function Enemy(enemy_x, enemy_y, sprite, startSpeed) {
 Enemy.prototype = Object.create(Mover.prototype);
 // Set "constructor" property
 Enemy.prototype.constructor = Enemy;
-
-Enemy.prototype.sayHello = function() {
-    console.log("I'm an enemy... my speed is " + this.speed);
-};
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -108,7 +183,7 @@ Enemy.prototype.findCollision = function() {
             app.parkEnemies();
             app.score = 0;
             app.lives = 0;
-            gameMessage("<img src='images/enemy-bug.png' alt='Enemy Bug picture'><p>Sorry, you're out of lives!<br/>Start over?</p>");
+            app.gameMessage("<img src='images/enemy-bug.png' alt='Enemy Bug picture'><p>Sorry, you're out of lives!<br/>Start over?</p>");
             hideStart();
             hideRestart();
             showReplay();
@@ -134,6 +209,7 @@ Enemy.prototype.gemCollision = function() {
         }
     }
 };
+
 
 /////////////////////////////////////////////////////////////////////////////
 // Gems
@@ -178,91 +254,6 @@ function resetAllGems() {
     }
 }
 
-
-// Now write your own player class ////////////////////////////////////////////
-// This class requires an update(), render() and
-// a handleInput() method.
-// Now write your own player class
-var Player = function() {
-    this.x = 200;
-    this.y = 410;
-    // NOTE: default player is a girl!
-    this.sprite = 'images/char-pink-girl.png';
-};
-
-Player.prototype.update = function() {
-    //check to see if we've scored a gem.
-    this.gemCollision();
-    //NOTE: incrementing the score inside here means that it updates multiple times!
-};
-
-// event is win or lose, restart the player back to start square
-//  and, send on the game message.
-Player.prototype.reset = function(msg) {
-    this.x = 200;
-    this.y = 410;
-    //console.log("Player starts over!");
-
-    gameMessage(msg);
-    // get enemies into position to start over
-    app.parkEnemies();
-
-}
-
-Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-Player.prototype.handleInput = function(event) {
-    this.ctlKey = event;
-    //console.log(this.ctlKey);
-
-    if (this.ctlKey === 'left' && this.x > 0) {
-        this.x -= app.player_base_move;
-    } else if (this.ctlKey === 'right' && this.x < 410) {
-        this.x = this.x + app.player_base_move;
-    } else if (this.ctlKey === 'up' && this.y > 18) {
-        this.y = this.y - app.player_base_move;
-    } else if (this.ctlKey === 'down' && this.y < 410) {
-        this.y = this.y + app.player_base_move;
-    }
-
-    if (player.y === -10) {
-        adjustScore();
-        var leftToGo = app.WINNING_SCORE - app.score;
-        if (app.score >= app.WINNING_SCORE || leftToGo === 0) {
-            restartGame();
-        } else {
-            player.reset("You WON this round!<br/>Only " + leftToGo + " points to go!");
-        }
-    }
-    //console.log(this.ctlKey + ": I am at x" + this.x + ", y" + this.y);
-};
-
-// method to handle collisions!
-Player.prototype.gemCollision = function() {
-
-    // there are multiple gems!
-    for (var gem = 0; gem < app.allGems.length; gem++) {
-        if (app.allGems[gem].x < this.x + app.pngWidth &&
-            app.allGems[gem].x + app.pngWidth > this.x &&
-            app.allGems[gem].y < this.y + app.pngHeight &&
-            app.allGems[gem].y + app.pngHeight > this.y) {
-            //collision?
-           // console.log("Player Gem Collision!!!1!");
-            // move the gem offscreen where it won't count anymore
-            app.allGems[gem].y = 1000;
-            // increment the score
-            adjustScore();
-            // test if we've gotten to WIN...
-            if (app.score >= app.WINNING_SCORE) {
-                restartGame();
-            }
-        }
-    }
-
-};
-
 ////////////////////////////////////////////////////////////////////////////
 // Game functions
 ////////////////////////////////////////////////////////////////////////////
@@ -296,7 +287,8 @@ function startEnemies() {
 
 
 //this is all it takes to start the player object.
-var player = new Player();
+// notice that we feed in the x, y, and initial player icon file name
+var player = new Player(200, 410, "images/char-pink-girl.png");
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method.
@@ -311,7 +303,7 @@ document.addEventListener('keyup', function(e) {
 });
 
 // increment the score
-function adjustScore() {
+app.adjustScore = function() {
     app.score++;
     document.getElementById("score").value = app.score;
 }
@@ -320,7 +312,7 @@ function adjustScore() {
 // Game Messaging
 
 // take the success/failure/whatever message and send it on to the headline div
-function gameMessage(msg) {
+app.gameMessage = function(msg) {
     document.getElementById("headline").style.display = "block";
     document.getElementById("headline").innerHTML = msg;
     document.getElementById("game").style.display = "none";
@@ -346,7 +338,7 @@ document.getElementById("restart").addEventListener("click", function() {
 
 // Start over button binding
 document.getElementById("replay").addEventListener("click", function() {
-    restartGame();
+    app.restartGame();
 });
 
 // Choose Avatar Button
@@ -365,7 +357,7 @@ document.getElementById("closeAbout").addEventListener("click", function() {
 });
 
 // make the restart a function so that we can call it from player.reset too.
-function restartGame() {
+app.restartGame = function() {
     //console.log("Resetting game over, score: " + app.score + " / lives: " + app.lives);
     if (app.lives === 0) {
         document.getElementById("headline").style.display = "none";

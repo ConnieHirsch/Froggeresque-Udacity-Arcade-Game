@@ -1,16 +1,19 @@
 // variables to hold values...
 //var player_base_move = 30;
-var allEnemies = [];
-var allGems = [];
-var score = 0;
-var lives = 3;
-var pngWidth = 56; //total width of png: 101
-var pngHeight = 56; // total height of png : 171
+//var score = 0;
+//var lives = 3;
 const WINNING_SCORE = 4; // arbitrary WIN condition
 
-
+// Global variable to hold onto global variables safely:
 var app = app || {};
+//
 app.player_base_move = 30;
+app.score = 0;
+app.lives = 3;
+app.pngWidth = 56; //total width of png: 101
+app.pngHeight = 56; // total height of png : 171
+app.allEnemies = [];
+app.allGems = [];
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -44,15 +47,15 @@ for (var gem = 0; gem < 3; gem++) {
     var place_y = Math.floor(Math.random() * 300 + 30);
     var newGem = new Gem(place_x, place_y);
     //console.log(newGem);
-    allGems.push(newGem);
+    app.allGems.push(newGem);
 }
-console.log(allGems);
+console.log(app.allGems);
 
 // if we restart the game, all gems have to be replaced on teh board
 function resetAllGems() {
     for (var gem = 0; gem < 3; gem++) {
-        allGems[gem].y = Math.floor(Math.random() * 300 + 30);
-        allGems[gem].x = Math.floor(Math.random() * 300 + 30);
+        app.allGems[gem].y = Math.floor(Math.random() * 300 + 30);
+        app.allGems[gem].x = Math.floor(Math.random() * 300 + 30);
     }
 }
 
@@ -96,24 +99,24 @@ Enemy.prototype.render = function() {
 // method to handle collisions!
 Enemy.prototype.findCollision = function() {
 
-    if (player.x < this.x + pngWidth &&
-        player.x + pngWidth > this.x &&
-        player.y < this.y + pngHeight &&
-        player.y + pngHeight > this.y) {
+    if (player.x < this.x + app.pngWidth &&
+        player.x + app.pngWidth > this.x &&
+        player.y < this.y + app.pngHeight &&
+        player.y + app.pngHeight > this.y) {
         //collision?
-        console.log("Enemy Collision!!!1!");
-        lives--;
-        document.getElementById("lives").value = lives;
-        if (lives < 1) {
+        //console.log("Enemy Collision!!!1!");
+        app.lives--;
+        document.getElementById("lives").value = app.lives;
+        if (app.lives < 1) {
             parkEnemies();
-            score = 0;
-            lives = 0;
+            app.score = 0;
+            app.lives = 0;
             gameMessage("<img src='images/enemy-bug.png' alt='Enemy Bug picture'><p>Sorry, you're out of lives!<br/>Start over?</p>");
             hideStart();
             hideRestart();
             showReplay();
         } else {
-            player.reset(lives + " lives left, continue?");
+            player.reset(app.lives + " lives left, continue?");
         }
     }
 
@@ -123,14 +126,14 @@ Enemy.prototype.findCollision = function() {
 Enemy.prototype.gemCollision = function() {
 
     // there are multiple gems!
-    for (var gem = 0; gem < allGems.length; gem++) {
-        if (allGems[gem].x < this.x + pngWidth &&
-            allGems[gem].x + pngWidth > this.x &&
-            allGems[gem].y < this.y + pngHeight &&
-            allGems[gem].y + pngHeight > this.y) {
+    for (var gem = 0; gem < app.allGems.length; gem++) {
+        if (app.allGems[gem].x < this.x + app.pngWidth &&
+            app.allGems[gem].x + app.pngWidth > this.x &&
+            app.allGems[gem].y < this.y + app.pngHeight &&
+            app.allGems[gem].y + app.pngHeight > this.y) {
             //collision?
             //console.log("Gem Collision!!!1!");
-            allGems[gem].reset();
+            app.allGems[gem].reset();
         }
     }
 };
@@ -157,7 +160,7 @@ Player.prototype.update = function() {
 Player.prototype.reset = function(msg) {
     this.x = 200;
     this.y = 410;
-    console.log("Player starts over!");
+    //console.log("Player starts over!");
 
     gameMessage(msg);
     // get enemies into position to start over
@@ -185,8 +188,8 @@ Player.prototype.handleInput = function(event) {
 
     if (player.y === -10) {
         adjustScore();
-        var leftToGo = WINNING_SCORE - score;
-        if (score >= WINNING_SCORE || leftToGo === 0) {
+        var leftToGo = WINNING_SCORE - app.score;
+        if (app.score >= WINNING_SCORE || leftToGo === 0) {
             restartGame();
         } else {
             player.reset("You WON this round!<br/>Only " + leftToGo + " points to go!");
@@ -199,19 +202,19 @@ Player.prototype.handleInput = function(event) {
 Player.prototype.gemCollision = function() {
 
     // there are multiple gems!
-    for (var gem = 0; gem < allGems.length; gem++) {
-        if (allGems[gem].x < this.x + pngWidth &&
-            allGems[gem].x + pngWidth > this.x &&
-            allGems[gem].y < this.y + pngHeight &&
-            allGems[gem].y + pngHeight > this.y) {
+    for (var gem = 0; gem < app.allGems.length; gem++) {
+        if (app.allGems[gem].x < this.x + app.pngWidth &&
+            app.allGems[gem].x + app.pngWidth > this.x &&
+            app.allGems[gem].y < this.y + app.pngHeight &&
+            app.allGems[gem].y + app.pngHeight > this.y) {
             //collision?
-            console.log("Player Gem Collision!!!1!");
+           // console.log("Player Gem Collision!!!1!");
             // move the gem offscreen where it won't count anymore
-            allGems[gem].y = 1000;
+            app.allGems[gem].y = 1000;
             // increment the score
             adjustScore();
             // test if we've gotten to WIN...
-            if (score >= WINNING_SCORE) {
+            if (app.score >= WINNING_SCORE) {
                 restartGame();
             }
         }
@@ -233,28 +236,28 @@ for (var path = 0; path < paths.length; path++) {
     // when they are ready to actually START
     var newEnemy = new Enemy(-200, paths[path], 0);
     //console.log(newEnemy);
-    allEnemies.push(newEnemy);
+    app.allEnemies.push(newEnemy);
 }
-console.log(allEnemies);
+//console.log(allEnemies);
 
 // all bugs start off at 0 speed offscreen, only get moving when we tell them to
 function startEnemies() {
     // add activity to offscreen enemies
-    for (var enemy = 0; enemy < allEnemies.length; enemy++) {
+    for (var enemy = 0; enemy < app.allEnemies.length; enemy++) {
         var speed = Math.floor(Math.random() * 140 + 40);
         var startingLine = Math.floor(Math.random() * 300 + 100);
-        allEnemies[enemy].x = -startingLine;
-        allEnemies[enemy].speed = speed;
+        app.allEnemies[enemy].x = -startingLine;
+        app.allEnemies[enemy].speed = speed;
     }
-    console.log("Restarted enemies!");
-    console.log(allEnemies);
+    //console.log("Restarted enemies!");
+    //console.log(app.allEnemies);
 }
 
 function parkEnemies() {
     // hide them offscreen until player is ready to restart
-    for (var enemy = 0; enemy < allEnemies.length; enemy++) {
-        allEnemies[enemy].x = -200;
-        allEnemies[enemy].speed = 0;
+    for (var enemy = 0; enemy < app.allEnemies.length; enemy++) {
+        app.allEnemies[enemy].x = -200;
+        app.allEnemies[enemy].speed = 0;
     }
 }
 
@@ -275,8 +278,8 @@ document.addEventListener('keyup', function(e) {
 
 // increment the score
 function adjustScore() {
-    score++;
-    document.getElementById("score").value = score;
+    app.score++;
+    document.getElementById("score").value = app.score;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -314,7 +317,7 @@ document.getElementById("replay").addEventListener("click", function() {
 
 // Choose Avatar Button
 document.getElementById("chooseAvatar").addEventListener("click", function() {
-    console.log("Calling avatar function");
+    //console.log("Calling avatar function");
     chooseAvatar();
 });
 
@@ -329,8 +332,8 @@ document.getElementById("closeAbout").addEventListener("click", function() {
 
 // make the restart a function so that we can call it from player.reset too.
 function restartGame() {
-    console.log("Resetting game over, score: " + score + " / lives: " + lives);
-    if (lives === 0) {
+    //console.log("Resetting game over, score: " + app.score + " / lives: " + app.lives);
+    if (app.lives === 0) {
         document.getElementById("headline").style.display = "none";
         document.getElementById("game").style.display = "inline";
     } else {
@@ -348,11 +351,11 @@ function restartGame() {
     showStart();
     player.x = 200;
     player.y = 410;
-    score = 0;
-    document.getElementById("score").value = score;
-    console.log("score reset to " + score);
-    lives = 3;
-    document.getElementById("lives").value = lives;
+    app.score = 0;
+    document.getElementById("score").value = app.score;
+    //console.log("score reset to " + app.score);
+    app.lives = 3;
+    document.getElementById("lives").value = app.lives;
     //startEnemies();
     resetAllGems();
 
@@ -402,7 +405,7 @@ for (var btn = 0; btn < allButtons.length; btn++) {
         characterButtons.push(allButtons[btn]);
     }
 }
-console.log(characterButtons);
+//console.log(characterButtons);
 
 // now take that set of character buttons and assign click actions to them
 // but we'll have to make it a CLOSURE FUNCTION
@@ -429,7 +432,7 @@ function setupPlayerIcon() {
 
     for (var btn = 0; btn < characterButtons.length; btn++) {
         var playerIcon = characterButtons[btn].id;
-        console.log("Setting up onclick for " + playerIcon);
+        //console.log("Setting up onclick for " + playerIcon);
         characterButtons[btn].onclick = makeChangeCallback(playerIcon);
     }
 }

@@ -16,53 +16,34 @@ app.lives = 3;
 app.WINNING_SCORE = 4; // arbitrary WIN condition
 app.pngWidth = 56; //total width of png: 101
 app.pngHeight = 56; // total height of png : 171
-app.allEnemies = [];
-app.allGems = [];
+app.allEnemies = []; // holder for array of Enemies
+app.allGems = []; // holder for Gems.
 
-
-/////////////////////////////////////////////////////////////////////////////
-// Gems
-var Gem = function(gem_x, gem_y) {
-    this.x = gem_x;
-    this.y = gem_y;
-    //image sprite
-    this.sprite = 'images/Gem Blue.png';
+// Mover is base class for Players, Bugs and Gems because they have enough
+//  common code to share some methods and functions
+//  Note that now we'll pass the X, Y, AND the Sprite image file string
+//  such as 'images/Gem Blue.png'.
+//
+var Mover = function(place_x, place_y, sprite) {
+    this.x = place_x;
+    this.y = place_y;
+    this.sprite = sprite;
 };
 
-Gem.prototype.update = function(gem_x, gem_y) {
-    this.x = gem_x;
-    this.y = gem_y;
+Mover.prototype.update = function(this_x, this_y) {
+    this.x = this_x;
+    this.y = this_y;
 };
 
-Gem.prototype.reset = function() {
-    var place_x = Math.floor(Math.random() * 450 + 30);
-    var place_y = Math.floor(Math.random() * 250 + 30);
-    //console.log("Gem reset, now x:" + place_x + " y:" + place_y + "!");
-    this.update(place_x, place_y);
-};
-// Draw the enemy on the screen, required method for game
-Gem.prototype.render = function() {
+Mover.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// place the gems
-for (var gem = 0; gem < 3; gem++) {
-    var place_x = Math.floor(Math.random() * 300 + 30);
-    var place_y = Math.floor(Math.random() * 300 + 30);
-    var newGem = new Gem(place_x, place_y);
-    //console.log(newGem);
-    app.allGems.push(newGem);
-}
-console.log(app.allGems);
+Mover.prototype.sayHello = function() {
+    console.log("Hello World!");
+};
 
-// if we restart the game, all gems have to be replaced on teh board
-function resetAllGems() {
-    for (var gem = 0; gem < 3; gem++) {
-        app.allGems[gem].y = Math.floor(Math.random() * 300 + 30);
-        app.allGems[gem].x = Math.floor(Math.random() * 300 + 30);
-    }
-}
-
+var mover = new Mover(200, 200, "images/Heart.png")
 /////////////////////////////////////////////////////////////////
 // Enemies our player must avoid
 var Enemy = function(enemy_x, enemy_y, startSpeed) {
@@ -141,6 +122,50 @@ Enemy.prototype.gemCollision = function() {
         }
     }
 };
+
+/////////////////////////////////////////////////////////////////////////////
+// Gems
+var Gem = function(gem_x, gem_y) {
+    this.x = gem_x;
+    this.y = gem_y;
+    //image sprite
+    this.sprite = 'images/Gem Blue.png';
+};
+
+Gem.prototype.update = function(gem_x, gem_y) {
+    this.x = gem_x;
+    this.y = gem_y;
+};
+
+Gem.prototype.reset = function() {
+    var place_x = Math.floor(Math.random() * 450 + 30);
+    var place_y = Math.floor(Math.random() * 250 + 30);
+    //console.log("Gem reset, now x:" + place_x + " y:" + place_y + "!");
+    this.update(place_x, place_y);
+};
+// Draw the enemy on the screen, required method for game
+Gem.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+// place the gems
+for (var gem = 0; gem < 3; gem++) {
+    var place_x = Math.floor(Math.random() * 300 + 30);
+    var place_y = Math.floor(Math.random() * 300 + 30);
+    var newGem = new Gem(place_x, place_y);
+    //console.log(newGem);
+    app.allGems.push(newGem);
+}
+//console.log(app.allGems);
+
+// if we restart the game, all gems have to be replaced on teh board
+function resetAllGems() {
+    for (var gem = 0; gem < 3; gem++) {
+        app.allGems[gem].y = Math.floor(Math.random() * 300 + 30);
+        app.allGems[gem].x = Math.floor(Math.random() * 300 + 30);
+    }
+}
+
 
 // Now write your own player class ////////////////////////////////////////////
 // This class requires an update(), render() and

@@ -1,8 +1,11 @@
-// variables to hold values...
-//var player_base_move = 30;
-//var score = 0;
-//var lives = 3;
-const WINNING_SCORE = 4; // arbitrary WIN condition
+////////////////////////////////////////////////////////////////////////////////////
+//
+//  app.js
+//  main code for Froggeresque
+//  works with: engine.js, resources.js
+//
+////////////////////////////////////////////////////////////////////////////////////
+
 
 // Global variable to hold onto global variables safely:
 var app = app || {};
@@ -10,6 +13,7 @@ var app = app || {};
 app.player_base_move = 30;
 app.score = 0;
 app.lives = 3;
+app.WINNING_SCORE = 4; // arbitrary WIN condition
 app.pngWidth = 56; //total width of png: 101
 app.pngHeight = 56; // total height of png : 171
 app.allEnemies = [];
@@ -188,8 +192,8 @@ Player.prototype.handleInput = function(event) {
 
     if (player.y === -10) {
         adjustScore();
-        var leftToGo = WINNING_SCORE - app.score;
-        if (app.score >= WINNING_SCORE || leftToGo === 0) {
+        var leftToGo = app.WINNING_SCORE - app.score;
+        if (app.score >= app.WINNING_SCORE || leftToGo === 0) {
             restartGame();
         } else {
             player.reset("You WON this round!<br/>Only " + leftToGo + " points to go!");
@@ -214,7 +218,7 @@ Player.prototype.gemCollision = function() {
             // increment the score
             adjustScore();
             // test if we've gotten to WIN...
-            if (app.score >= WINNING_SCORE) {
+            if (app.score >= app.WINNING_SCORE) {
                 restartGame();
             }
         }

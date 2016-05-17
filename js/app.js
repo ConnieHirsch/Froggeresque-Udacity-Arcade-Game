@@ -42,10 +42,50 @@ Mover.prototype.render = function() {
 Mover.prototype.sayHello = function() {
     console.log("Hello World!");
 };
-
 var mover = new Mover(200, 200, "images/Heart.png")
+
+
 /////////////////////////////////////////////////////////////////
 // Enemies our player must avoid
+
+function Enemy(enemy_x, enemy_y, sprite, startSpeed) {
+    //Calling the parent contructor -- pass the first three items
+    Mover.call(this, enemy_x, enemy_y, sprite);
+    // Now initialize Enemy-specific property
+    this.speed = startSpeed;
+}
+
+// Create the Enemy.prototype object that inherits from Mover
+Enemy.prototype = Object.create(Mover.prototype);
+// Set "constructor" property
+Enemy.prototype.constructor = Enemy;
+
+Enemy.prototype.sayHello = function() {
+    console.log("I'm an enemy... my speed is " + this.speed);
+};
+
+// Update the enemy's position, required method for game
+// Parameter: dt, a time delta between ticks
+Enemy.prototype.update = function(dt) {
+    this.x = this.x + this.speed * dt;
+    if (this.x > 505) {
+        this.speed = this.reset();
+    }
+    // invoke collision detection
+    this.findCollision();
+    this.gemCollision();
+};
+
+Enemy.prototype.reset = function(speed) {
+    this.x = -100;
+    var speed = Math.floor(Math.random() * 140 + 40);
+    //console.log("Bug reset, new speed is " + speed + "!");
+    return speed;
+};
+var enemyNEW = new Enemy(200, 200, "images/Heart.png", 50);
+
+
+// older code /////////////////////////////////////////////////////////
 var Enemy = function(enemy_x, enemy_y, startSpeed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started

@@ -88,7 +88,7 @@ Player.prototype.reset = function(msg) {
     //console.log("Player starts over!");
     app.gameMessage(msg);
     // get enemies into position to start over -- inherited from Mover class!
-    player.parkEnemies();
+    this.parkEnemies();
 
 }
 Player.prototype.handleInput = function(event) {
@@ -105,13 +105,15 @@ Player.prototype.handleInput = function(event) {
         this.y = this.y + app.player_base_move;
     }
 
-    if (player.y === -10) {
+    // check if player (this) has moved to the goal line -10
+    // if so, up the score and then check if WINNING_SCORE reached.
+    if (this.y === -10) {
         app.adjustScore();
         var leftToGo = app.WINNING_SCORE - app.score;
         if (app.score >= app.WINNING_SCORE || leftToGo === 0) {
             app.restartGame();
         } else {
-            player.reset("You WON this round!<br/>Only " + leftToGo + " points to go!");
+            this.reset("You WON this round!<br/>Only " + leftToGo + " points to go!");
         }
     }
     //console.log(this.ctlKey + ": I am at x" + this.x + ", y" + this.y);
@@ -170,9 +172,9 @@ Enemy.prototype.update = function(dt) {
 
 Enemy.prototype.reset = function(speed) {
     this.x = -100;
-    var speed = Math.floor(Math.random() * 140 + 40);
+    var newEnemySpeed = Math.floor(Math.random() * 140 + 40);
     //console.log("Bug reset, new speed is " + speed + "!");
-    return speed;
+    return newEnemySpeed;
 };
 
 // method to handle collisions!
@@ -192,7 +194,6 @@ Enemy.prototype.findCollision = function() {
             app.lives = 0;
             app.gameMessage("<img src='images/enemy-bug.png' alt='Enemy Bug picture'><p>Sorry, you're out of lives!<br/>Start over?</p>");
             hideStart();
-            hideRestart();
             showReplay();
         } else {
             player.reset(app.lives + " lives left, continue?");
@@ -244,7 +245,11 @@ Gem.prototype.reset = function() {
     this.update(place_x, place_y);
 };
 
-// place the gems
+////////////////////////////////////////////////////////////////////////////
+// Game functions
+////////////////////////////////////////////////////////////////////////////
+
+// create the gems and place them randomly on the board!
 for (var gem = 0; gem < 3; gem++) {
     var place_x = Math.floor(Math.random() * 300 + 30);
     var place_y = Math.floor(Math.random() * 300 + 30);
@@ -252,7 +257,6 @@ for (var gem = 0; gem < 3; gem++) {
     //console.log(newGem);
     app.allGems.push(newGem);
 }
-//console.log(app.allGems);
 
 // if we restart the game, all gems have to be replaced on teh board
 function resetAllGems() {
@@ -262,23 +266,17 @@ function resetAllGems() {
     }
 }
 
-////////////////////////////////////////////////////////////////////////////
-// Game functions
-////////////////////////////////////////////////////////////////////////////
-
+// now populate the Enemy bugs
 // decided I wanted predictable paths for bugs, hence the array.
 var paths = [65, 145, 226];
 
 for (var path = 0; path < paths.length; path++) {
-    //var speed = Math.floor(Math.random() * 140 + 40);
-    //var startingLine = Math.floor(Math.random() * 300 + 100);
     // now we START all enemies offscreen, and let the player 'restart' them
     // when they are ready to actually START
     var newEnemy = new Enemy(-200, paths[path],'images/enemy-bug.png', 0);
     //console.log(newEnemy);
     app.allEnemies.push(newEnemy);
 }
-//console.log(allEnemies);
 
 // all bugs start off at 0 speed offscreen, only get moving when we tell them to
 function startEnemies() {
@@ -289,8 +287,6 @@ function startEnemies() {
         app.allEnemies[enemy].x = -startingLine;
         app.allEnemies[enemy].speed = speed;
     }
-    //console.log("Restarted enemies!");
-    //console.log(app.allEnemies);
 }
 
 
@@ -316,8 +312,36 @@ app.adjustScore = function() {
     document.getElementById("score").value = app.score;
 }
 
+// make the restart a function so that we can call it from player.reset too.
+app.restartGame = function() {
+    //console.log("Resetting game over, score: " + app.score + " / lives: " + app.lives);
+    if (app.lives === 0) {
+        document.getElementById("headline").style.display = "none";
+        document.getElementById("game").style.display = "inline";
+    } else {
+        document.getElementById("headline").style.display = "block";
+        // get current player icon (it can have been changeed) and display it with
+        //  won msg
+        var sprite = player.sprite;
+        var playerPic = "<img src='" + sprite + "' alt='Current player icon'>";
+        document.getElementById("headline").innerHTML = playerPic +
+            "<p>Terrific! You WON!<br/> Play Again?</p>";
+        document.getElementById("game").style.display = "none";
+    }
+    hideReplay();
+    showStart();
+    player.x = app.PLAYER_X;
+    player.y = app.PLAYER_Y;
+    app.score = 0;
+    document.getElementById("score").value = app.score;
+    app.lives = 3;
+    document.getElementById("lives").value = app.lives;
+    resetAllGems();
+
+}
+
 ///////////////////////////////////////////////////////////////////////////////
-// Game Messaging
+// Game Messaging and buttons
 
 // take the success/failure/whatever message and send it on to the headline div
 app.gameMessage = function(msg) {
@@ -330,15 +354,6 @@ app.gameMessage = function(msg) {
 // 'Start' button to begin game binding
 document.getElementById("start").addEventListener("click", function() {
     showStart();
-    hideRestart();
-    document.getElementById("game").style.display = "inline";
-    document.getElementById("headline").style.display = "none";
-    startEnemies();
-});
-
-// Next turn button binding
-document.getElementById("restart").addEventListener("click", function() {
-    showReplay();
     document.getElementById("game").style.display = "inline";
     document.getElementById("headline").style.display = "none";
     startEnemies();
@@ -364,37 +379,6 @@ document.getElementById("closeAbout").addEventListener("click", function() {
     document.getElementById("aboutThisGame").style.display = "none";
 });
 
-// make the restart a function so that we can call it from player.reset too.
-app.restartGame = function() {
-    //console.log("Resetting game over, score: " + app.score + " / lives: " + app.lives);
-    if (app.lives === 0) {
-        document.getElementById("headline").style.display = "none";
-        document.getElementById("game").style.display = "inline";
-    } else {
-        document.getElementById("headline").style.display = "block";
-        // get current player icon (it can have been changeed) and display it with
-        //  won msg
-        var sprite = player.sprite;
-        var playerPic = "<img src='" + sprite + "' alt='Current player icon'>";
-        document.getElementById("headline").innerHTML = playerPic +
-            "<p>Terrific! You WON!<br/> Play Again?</p>";
-        document.getElementById("game").style.display = "none";
-    }
-    hideReplay();
-    hideRestart();
-    showStart();
-    player.x = app.PLAYER_X;
-    player.y = app.PLAYER_Y;
-    app.score = 0;
-    document.getElementById("score").value = app.score;
-    //console.log("score reset to " + app.score);
-    app.lives = 3;
-    document.getElementById("lives").value = app.lives;
-    //startEnemies();
-    resetAllGems();
-
-}
-
 // what the Choose Player Avatar button DOES
 //  which is -- unhide the buttons, hide the game area.
 //  when you pick one, the function resets the screen appropriately.
@@ -402,14 +386,6 @@ function chooseAvatar() {
     document.getElementById("avatar").style.display = "block";
     document.getElementById("gameArea").style.display = "none";
     document.getElementById("menu").style.display = "none";
-}
-
-function hideRestart() {
-    document.getElementById("restart").style.display = "none";
-}
-
-function showRestart() {
-    document.getElementById("restart").style.display = "inline";
 }
 
 function showReplay() {

@@ -6,6 +6,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
+'use strict';
 
 // Global variable to hold onto global variables safely:
 var app = app || {};
@@ -14,18 +15,14 @@ app.player_base_move = 30;
 app.score = 0;
 app.lives = 3;
 app.WINNING_SCORE = 4; // arbitrary WIN condition
+app.PLAYER_X = 200;
+app.PLAYER_Y = 410;
 app.pngWidth = 56; //total width of png: 101
 app.pngHeight = 56; // total height of png : 171
 app.allEnemies = []; // holder for array of Enemies
 app.allGems = []; // holder for Gems.
 // global functions also go here.
-app.parkEnemies = function() {
-    // hide them offscreen until player is ready to restart
-    for (var enemy = 0; enemy < app.allEnemies.length; enemy++) {
-        app.allEnemies[enemy].x = -200;
-        app.allEnemies[enemy].speed = 0;
-    }
-}
+
 
 // Mover is base class for Players, Bugs and Gems because they have enough
 //  common code to share some methods and functions
@@ -47,6 +44,19 @@ Mover.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+Mover.prototype.sayHello = function(){
+    console.log("Hey, this works!");
+}
+
+// We need this to be within the class because it gets referenced inside a class
+//  function.
+Mover.prototype.parkEnemies = function() {
+    // hide them offscreen until player is ready to restart
+    for (var enemy = 0; enemy < app.allEnemies.length; enemy++) {
+        app.allEnemies[enemy].x = -200;
+        app.allEnemies[enemy].speed = 0;
+    }
+}
 ////////////////////////////////////////////////////////////////////////////////////
 //  Player Class!
 // Also based on Mover Class and prototyped accordingly.
@@ -73,15 +83,14 @@ Player.prototype.update = function() {
 // event is win or lose, restart the player back to start square
 //  and, send on the game message.
 Player.prototype.reset = function(msg) {
-    this.x = 200;
-    this.y = 410;
+    this.x = app.PLAYER_X;
+    this.y = app.PLAYER_Y;
     //console.log("Player starts over!");
     app.gameMessage(msg);
-    // get enemies into position to start over
-    app.parkEnemies();
+    // get enemies into position to start over -- inherited from Mover class!
+    player.parkEnemies();
 
 }
-
 Player.prototype.handleInput = function(event) {
     this.ctlKey = event;
     //console.log(this.ctlKey);
@@ -157,7 +166,7 @@ Enemy.prototype.update = function(dt) {
     // invoke collision detection
     this.findCollision();
     this.gemCollision();
-};
+}
 
 Enemy.prototype.reset = function(speed) {
     this.x = -100;
@@ -165,8 +174,6 @@ Enemy.prototype.reset = function(speed) {
     //console.log("Bug reset, new speed is " + speed + "!");
     return speed;
 };
-
-//var enemyNEW = new Enemy(200, 200, "images/Heart.png", 50);
 
 // method to handle collisions!
 Enemy.prototype.findCollision = function() {
@@ -180,7 +187,7 @@ Enemy.prototype.findCollision = function() {
         app.lives--;
         document.getElementById("lives").value = app.lives;
         if (app.lives < 1) {
-            app.parkEnemies();
+            player.parkEnemies();
             app.score = 0;
             app.lives = 0;
             app.gameMessage("<img src='images/enemy-bug.png' alt='Enemy Bug picture'><p>Sorry, you're out of lives!<br/>Start over?</p>");
@@ -289,7 +296,7 @@ function startEnemies() {
 
 //this is all it takes to start the player object.
 // notice that we feed in the x, y, and initial player icon file name
-var player = new Player(200, 410, "images/char-pink-girl.png");
+var player = new Player(app.PLAYER_X, app.PLAYER_Y, "images/char-pink-girl.png");
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method.
@@ -376,8 +383,8 @@ app.restartGame = function() {
     hideReplay();
     hideRestart();
     showStart();
-    player.x = 200;
-    player.y = 410;
+    player.x = app.PLAYER_X;
+    player.y = app.PLAYER_Y;
     app.score = 0;
     document.getElementById("score").value = app.score;
     //console.log("score reset to " + app.score);

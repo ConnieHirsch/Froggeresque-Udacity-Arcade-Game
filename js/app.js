@@ -213,12 +213,17 @@ Enemy.prototype.gemCollision = function() {
 
 /////////////////////////////////////////////////////////////////////////////
 // Gems
-var Gem = function(gem_x, gem_y) {
-    this.x = gem_x;
-    this.y = gem_y;
-    //image sprite
-    this.sprite = 'images/Gem Blue.png';
-};
+
+function Gem(gem_x, gem_y, sprite) {
+    //Calling the parent contructor -- pass the first three items
+    Mover.call(this, gem_x, gem_y, sprite);
+}
+
+// Create the Gem.prototype object that inherits from Mover
+Gem.prototype = Object.create(Mover.prototype);
+// Set "constructor" property
+Gem.prototype.constructor = Gem;
+
 
 Gem.prototype.update = function(gem_x, gem_y) {
     this.x = gem_x;
@@ -231,16 +236,12 @@ Gem.prototype.reset = function() {
     //console.log("Gem reset, now x:" + place_x + " y:" + place_y + "!");
     this.update(place_x, place_y);
 };
-// Draw the enemy on the screen, required method for game
-Gem.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
 
 // place the gems
 for (var gem = 0; gem < 3; gem++) {
     var place_x = Math.floor(Math.random() * 300 + 30);
     var place_y = Math.floor(Math.random() * 300 + 30);
-    var newGem = new Gem(place_x, place_y);
+    var newGem = new Gem(place_x, place_y, 'images/Gem Blue.png');
     //console.log(newGem);
     app.allGems.push(newGem);
 }
@@ -388,7 +389,8 @@ app.restartGame = function() {
 }
 
 // what the Choose Player Avatar button DOES
-//
+//  which is -- unhide the buttons, hide the game area.
+//  when you pick one, the function resets the screen appropriately.
 function chooseAvatar() {
     document.getElementById("avatar").style.display = "block";
     document.getElementById("gameArea").style.display = "none";

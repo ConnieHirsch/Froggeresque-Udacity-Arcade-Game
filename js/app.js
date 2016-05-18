@@ -15,15 +15,15 @@ app.player_base_move = 30;
 app.score = 0;
 app.lives = 3;
 app.WINNING_SCORE = 4; // arbitrary WIN condition
-app.PLAYER_X = 200;
-app.PLAYER_Y = 410;
-app.pngWidth = 56; //total width of png: 101
+app.PLAYER_X = 200; // starting x
+app.PLAYER_Y = 410; // starting y
+app.pngWidth = 56; // total width of png: 101
 app.pngHeight = 56; // total height of png : 171
 app.allEnemies = []; // holder for array of Enemies
 app.allGems = []; // holder for Gems.
-// global functions also go here.
 
 
+//////////////////////////////////////////////////////////////////////////
 // Mover is base class for Players, Bugs and Gems because they have enough
 //  common code to share some methods and functions
 //  Note that now we'll pass the X, Y, AND the Sprite image file string
@@ -44,7 +44,7 @@ Mover.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Mover.prototype.sayHello = function(){
+Mover.prototype.sayHello = function() {
     console.log("Hey, this works!");
 }
 
@@ -63,7 +63,7 @@ Mover.prototype.parkEnemies = function() {
 ////////////////////////////////////////////////////////////////////////////////////
 /*
 
-*/
+ */
 function Player(player_x, player_y, sprite) {
     //Calling the parent contructor -- pass the first three items
     Mover.call(this, player_x, player_y, sprite);
@@ -129,7 +129,7 @@ Player.prototype.gemCollision = function() {
             app.allGems[gem].y < this.y + app.pngHeight &&
             app.allGems[gem].y + app.pngHeight > this.y) {
             //collision?
-           // console.log("Player Gem Collision!!!1!");
+            // console.log("Player Gem Collision!!!1!");
             // move the gem offscreen where it won't count anymore
             app.allGems[gem].y = 1000;
             // increment the score
@@ -232,12 +232,6 @@ Gem.prototype = Object.create(Mover.prototype);
 // Set "constructor" property
 Gem.prototype.constructor = Gem;
 
-
-Gem.prototype.update = function(gem_x, gem_y) {
-    this.x = gem_x;
-    this.y = gem_y;
-};
-
 Gem.prototype.reset = function() {
     var place_x = Math.floor(Math.random() * 450 + 30);
     var place_y = Math.floor(Math.random() * 250 + 30);
@@ -273,7 +267,7 @@ var paths = [65, 145, 226];
 for (var path = 0; path < paths.length; path++) {
     // now we START all enemies offscreen, and let the player 'restart' them
     // when they are ready to actually START
-    var newEnemy = new Enemy(-200, paths[path],'images/enemy-bug.png', 0);
+    var newEnemy = new Enemy(-200, paths[path], 'images/enemy-bug.png', 0);
     //console.log(newEnemy);
     app.allEnemies.push(newEnemy);
 }

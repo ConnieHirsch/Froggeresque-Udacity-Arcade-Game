@@ -12,7 +12,7 @@ If you are reading this online, you're already inside Github, so clone it to you
 
 Or, if you'd rather, there's a handy **Download ZIP** button that will let you put a local copy on your hard disk.
 
-Or, you can play online [here](www.constancehirsch.com/udacity/froggeresque/index.html), on my own site!
+Or, you can play online (www.constancehirsch.com/udacity/froggeresque/index.html), on my own site!
 
 ## How to Play
 

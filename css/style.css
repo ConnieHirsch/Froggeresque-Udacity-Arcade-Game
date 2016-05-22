@@ -92,6 +92,15 @@ button,
   background-color: limegreen;
   float: right;
 }
+
+#footer {
+  font-family: Sylfaen, serif;
+  width: 500px;
+  margin: auto;
+  clear: both;
+  text-align: center;
+  margin-top: 20px;
+}
 /*Avatars Section*/
 #avatar {
   color: royalblue;
